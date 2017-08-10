@@ -1,5 +1,5 @@
-data/*
-data/*/*
+data/*.mat
+data/*/*.mat
 !data/note.txt
 !data/model_dt.csv
 weights/*.h5
