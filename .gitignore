@@ -1,4 +1,5 @@
 data/*
+data/*/*
 !data/note.txt
 !data/model_dt.csv
 weights/*.h5
