@@ -23,14 +23,14 @@ from keras import backend as K
 
 from utils.generic_utils import load_dataset_at, calculate_dataset_metrics, cutoff_choice, \
                                 cutoff_sequence, plot_dataset
-from utils.constants import MAX_SEQUENCE_LENGTH_LIST
+from utils.constants import MAX_SEQUENCE_LENGTH_LIST, MAX_TIMESTEPS_LIST
 
 
 def train_model(model:Model, dataset_id, dataset_prefix, epochs=50, batch_size=128, val_subset=None,
                 cutoff=None, normalize_timeseries=False, learning_rate=1e-3):
     X_train, y_train, X_test, y_test, is_timeseries = load_dataset_at(dataset_id,
                                                                       normalize_timeseries=normalize_timeseries)
-    max_nb_words, sequence_length = calculate_dataset_metrics(X_train)
+    max_timesteps, sequence_length = calculate_dataset_metrics(X_train)
 
     if sequence_length != MAX_SEQUENCE_LENGTH_LIST[dataset_id]:
         if cutoff is None:
@@ -43,10 +43,6 @@ def train_model(model:Model, dataset_id, dataset_prefix, epochs=50, batch_size=1
             return
         else:
             X_train, X_test = cutoff_sequence(X_train, X_test, choice, dataset_id, sequence_length)
-
-    if not is_timeseries:
-        X_train = pad_sequences(X_train, maxlen=MAX_SEQUENCE_LENGTH_LIST[dataset_id], padding='post', truncating='post')
-        X_test = pad_sequences(X_test, maxlen=MAX_SEQUENCE_LENGTH_LIST[dataset_id], padding='post', truncating='post')
 
     classes = np.unique(y_train)
     le = LabelEncoder()
@@ -87,7 +83,7 @@ def evaluate_model(model:Model, dataset_id, dataset_prefix, batch_size=128, test
                    cutoff=None, normalize_timeseries=False):
     _, _, X_test, y_test, is_timeseries = load_dataset_at(dataset_id,
                                                           normalize_timeseries=normalize_timeseries)
-    max_nb_words, sequence_length = calculate_dataset_metrics(X_test)
+    max_timesteps, sequence_length = calculate_dataset_metrics(X_test)
 
     if sequence_length != MAX_SEQUENCE_LENGTH_LIST[dataset_id]:
         if cutoff is None:
@@ -127,7 +123,7 @@ def hyperparameter_search_over_model(model_gen, dataset_id, param_grid, cutoff=N
 
     X_train, y_train, _, _, is_timeseries = load_dataset_at(dataset_id,
                                                             normalize_timeseries=normalize_timeseries)
-    max_nb_words, sequence_length = calculate_dataset_metrics(X_train)
+    max_timesteps, sequence_length = calculate_dataset_metrics(X_train)
 
     if sequence_length != MAX_SEQUENCE_LENGTH_LIST[dataset_id]:
         if cutoff is None:

@@ -10,87 +10,44 @@ from utils.constants import TRAIN_FILES, TEST_FILES, MAX_SEQUENCE_LENGTH_LIST, N
 
 
 def load_dataset_at(index, normalize_timeseries=False, verbose=True) -> (np.array, np.array):
-    assert index < len(TRAIN_FILES), "Index invalid. Could not load dataset at %d" % index
     if verbose: print("Loading train / test dataset : ", TRAIN_FILES[index], TEST_FILES[index])
 
-    if os.path.exists(TRAIN_FILES[index]):
-        df = pd.read_csv(TRAIN_FILES[index], header=None, encoding='latin-1')
-    elif os.path.exists(TRAIN_FILES[index][1:]):
-        df = pd.read_csv(TRAIN_FILES[index][1:], header=None, encoding='latin-1')
+    x_train_path = TRAIN_FILES[index] + "X_train.npy"
+    y_train_path = TRAIN_FILES[index] + "y_train.npy"
+    x_test_path = TEST_FILES[index] + "X_test.npy"
+    y_test_path = TEST_FILES[index] + "y_test.npy"
+
+    if os.path.exists(x_train_path):
+        X_train = np.load(x_train_path)
+        y_train = np.load(y_train_path)
+        X_test = np.load(x_test_path)
+        y_test = np.load(y_test_path)
+    elif os.path.exists(x_train_path[1:]):
+        X_train = np.load(x_train_path[1:])
+        y_train = np.load(y_train_path[1:])
+        X_test = np.load(x_test_path[1:])
+        y_test = np.load(y_test_path[1:])
     else:
         raise FileNotFoundError('File %s not found!' % (TRAIN_FILES[index]))
 
-    is_timeseries = False if TRAIN_FILES[index][-3:] == 'csv' else True
-
-    # remove all columns which are completely empty
-    df.dropna(axis=1, how='all', inplace=True)
-
-    if not is_timeseries:
-        data_idx = df.columns[1:]
-        min_val = min(df.loc[:, data_idx].min())
-        if min_val == 0:
-            df.loc[:, data_idx] += 1
-
-    # fill all missing columns with 0
-    df.fillna(0, inplace=True)
-
-    # cast all data into integer (int32)
-    if not is_timeseries:
-        df[df.columns] = df[df.columns].astype(np.int32)
+    is_timeseries = True
 
     # extract labels Y and normalize to [0 - (MAX - 1)] range
-    y_train = df[[0]].values
     nb_classes = len(np.unique(y_train))
     y_train = (y_train - y_train.min()) / (y_train.max() - y_train.min()) * (nb_classes - 1)
 
-    # drop labels column from train set X
-    df.drop(df.columns[0], axis=1, inplace=True)
-
-    X_train = df.values
-
     if is_timeseries:
-        X_train = X_train[:, np.newaxis, :]
         # scale the values
         if normalize_timeseries:
             X_train = (X_train - X_train.mean(axis=0)) / (X_train.std(axis=0))
 
-    if verbose: print("Finished loading train dataset..")
-
-    if os.path.exists(TEST_FILES[index]):
-        df = pd.read_csv(TEST_FILES[index], header=None, encoding='latin-1')
-    elif os.path.exists(TEST_FILES[index][1:]):
-        df = pd.read_csv(TEST_FILES[index][1:], header=None, encoding='latin-1')
-    else:
-        raise FileNotFoundError('File %s not found!' % (TEST_FILES[index]))
-
-    # remove all columns which are completely empty
-    df.dropna(axis=1, how='all', inplace=True)
-
-    if not is_timeseries:
-        data_idx = df.columns[1:]
-        min_val = min(df.loc[:, data_idx].min())
-        if min_val == 0:
-            df.loc[:, data_idx] += 1
-
-    # fill all missing columns with 0
-    df.fillna(0, inplace=True)
-
-    # cast all data into integer (int32)
-    if not is_timeseries:
-        df[df.columns] = df[df.columns].astype(np.int32)
+    if verbose: print("Finished processing train dataset..")
 
     # extract labels Y and normalize to [0 - (MAX - 1)] range
-    y_test = df[[0]].values
     nb_classes = len(np.unique(y_test))
     y_test = (y_test - y_test.min()) / (y_test.max() - y_test.min()) * (nb_classes - 1)
 
-    # drop labels column from train set X
-    df.drop(df.columns[0], axis=1, inplace=True)
-
-    X_test = df.values
-
     if is_timeseries:
-        X_test = X_test[:, np.newaxis, :]
         # scale the values
         if normalize_timeseries:
             X_test = (X_test - X_test.mean(axis=0)) / (X_test.std(axis=0))
@@ -102,22 +59,14 @@ def load_dataset_at(index, normalize_timeseries=False, verbose=True) -> (np.arra
         print("Number of classes : ", nb_classes)
         print("Sequence length : ", X_train.shape[-1])
 
-
     return X_train, y_train, X_test, y_test, is_timeseries
 
 
 def calculate_dataset_metrics(X_train):
-    is_timeseries = len(X_train.shape) == 3
-    if is_timeseries:
-        # timeseries dataset
-        max_sequence_length = X_train.shape[-1]
-        max_nb_words = None
-    else:
-        # transformed dataset
-        max_sequence_length = X_train.shape[-1]
-        max_nb_words = np.amax(X_train) + 1
+    max_sequence_length = X_train.shape[-1]
+    max_timesteps = X_train.shape[1]
 
-    return max_nb_words, max_sequence_length
+    return max_timesteps, max_sequence_length
 
 
 def plot_dataset(dataset_id, seed=None, limit=None, cutoff=None,
@@ -339,6 +288,7 @@ def cutoff_sequence(X_train, X_test, choice, dataset_id, sequence_length):
 
 
 if __name__ == "__main__":
+    pass
     # word_list = []
     # seq_len_list = []
     # classes = []
@@ -362,5 +312,5 @@ if __name__ == "__main__":
     # print("Max number of classes : ", classes)
 
     #print()
-    plot_dataset(dataset_id=39, seed=1, limit=1, cutoff=None, normalize_timeseries=False,
-                 plot_classwise=True)
+    # plot_dataset(dataset_id=39, seed=1, limit=1, cutoff=None, normalize_timeseries=False,
+    #              plot_classwise=True)
