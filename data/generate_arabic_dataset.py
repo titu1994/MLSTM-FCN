@@ -51,6 +51,9 @@ for i in range(X_test.shape[0]):
     X_test[i, :, :var_count] = X[i]
 
 ''' Save the datasets '''
+print("Train dataset : ", X_train.shape, y_train.shape)
+print("Test dataset : ", X_test.shape, y_test.shape)
+print("Nb classes : ", len(np.unique(y_train)))
 
 np.save(arabic_path + 'X_train.npy', X_train)
 np.save(arabic_path + 'y_train.npy', y_train)

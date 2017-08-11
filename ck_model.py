@@ -6,7 +6,7 @@ from utils.constants import MAX_SEQUENCE_LENGTH_LIST, NB_CLASSES_LIST, MAX_TIMES
 from utils.keras_utils import train_model, evaluate_model, set_trainable, visualize_context_vector, visualize_cam
 from utils.layer_utils import AttentionLSTM
 
-DATASET_INDEX = 0
+DATASET_INDEX = 1
 
 MAX_TIMESTEPS = MAX_TIMESTEPS_LIST[DATASET_INDEX]
 MAX_SEQUENCE_LENGTH = MAX_SEQUENCE_LENGTH_LIST[DATASET_INDEX]
@@ -86,11 +86,11 @@ def generate_model_2():
 if __name__ == "__main__":
     model = generate_model_2()
 
-    train_model(model, DATASET_INDEX, dataset_prefix='arabic', epochs=1000, batch_size=128)
+    train_model(model, DATASET_INDEX, dataset_prefix='ck', epochs=1000, batch_size=128)
 
-    evaluate_model(model, DATASET_INDEX, dataset_prefix='arabic', batch_size=128)
+    evaluate_model(model, DATASET_INDEX, dataset_prefix='ck', batch_size=128)
 
-    #visualize_context_vector(model, DATASET_INDEX, dataset_prefix='arabic',
+    #visualize_context_vector(model, DATASET_INDEX, dataset_prefix='ck',
     #                         visualize_sequence=True, visualize_classwise=True, limit=1)
 
-    # visualize_cam(model, DATASET_INDEX, dataset_prefix='arabic', class_id=0)
+    # visualize_cam(model, DATASET_INDEX, dataset_prefix='ck', class_id=0)
