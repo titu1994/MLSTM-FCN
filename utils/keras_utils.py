@@ -60,7 +60,12 @@ def train_model(model:Model, dataset_id, dataset_prefix, dataset_fold_id=None, e
     else:
         factor = 1. / np.sqrt(2)
 
-    model_checkpoint = ModelCheckpoint("./weights/%s_weights.h5" % dataset_prefix, verbose=1,
+    if dataset_fold_id is None:
+        weight_fn = "./weights/%s_weights.h5" % dataset_prefix
+    else:
+        weight_fn = "./weights/%s_fold_%d_weights.h5" % (dataset_prefix, dataset_fold_id)
+
+    model_checkpoint = ModelCheckpoint(weight_fn, verbose=1,
                                        monitor='val_acc', save_best_only=True, save_weights_only=True)
     reduce_lr = ReduceLROnPlateau(monitor='val_acc', patience=100, mode='max',
                                   factor=factor, cooldown=0, min_lr=1e-4, verbose=2)
@@ -104,7 +109,11 @@ def evaluate_model(model:Model, dataset_id, dataset_prefix, dataset_fold_id=None
     optm = Adam(lr=1e-3)
     model.compile(optimizer=optm, loss='categorical_crossentropy', metrics=['accuracy'])
 
-    model.load_weights("./weights/%s_weights.h5" % dataset_prefix)
+    if dataset_fold_id is None:
+        weight_fn = "./weights/%s_weights.h5" % dataset_prefix
+    else:
+        weight_fn = "./weights/%s_fold_%d_weights.h5" % (dataset_prefix, dataset_fold_id)
+    model.load_weights(weight_fn)
 
     if test_data_subset is not None:
         X_test = X_test[:test_data_subset]

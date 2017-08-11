@@ -20,7 +20,7 @@ def generate_model():
 
     x = Permute((2, 1))(ip)
     x = Masking()(x)
-    x = LSTM(64)(x)
+    x = LSTM(8)(x)
     x = Dropout(0.8)(x)
 
     #y = Permute((2, 1))(ip)
@@ -55,7 +55,7 @@ def generate_model_2():
 
     x = Permute((2, 1))(ip)
     x = Masking()(x)
-    x = AttentionLSTM(64)(x)
+    x = AttentionLSTM(8)(x)
     x = Dropout(0.8)(x)
 
     #y = Permute((2, 1))(ip)
@@ -94,7 +94,7 @@ if __name__ == "__main__":
     for i in range(10):
         K.clear_session()
 
-        model = generate_model()
+        model = generate_model() # change to generate_model_2()
         train_model(model, DATASET_INDEX, dataset_prefix='ck', dataset_fold_id=(i + 1), epochs=600, batch_size=128)
         score = evaluate_model(model, DATASET_INDEX, dataset_prefix='ck', dataset_fold_id=(i + 1), batch_size=128)
         scores.append(score)
