@@ -7,7 +7,6 @@ import matplotlib.pyplot as plt
 mpl.style.use('seaborn-paper')
 
 from sklearn.preprocessing import LabelEncoder
-from sklearn.model_selection import GridSearchCV
 
 import warnings
 warnings.simplefilter('ignore', category=DeprecationWarning)
@@ -18,7 +17,6 @@ from keras.optimizers import Adam
 from keras.utils import to_categorical
 from keras.preprocessing.sequence import pad_sequences
 from keras.callbacks import ModelCheckpoint, ReduceLROnPlateau
-from keras.wrappers.scikit_learn import KerasClassifier
 from keras import backend as K
 
 from utils.generic_utils import load_dataset_at, calculate_dataset_metrics, cutoff_choice, \
@@ -26,9 +24,10 @@ from utils.generic_utils import load_dataset_at, calculate_dataset_metrics, cuto
 from utils.constants import MAX_SEQUENCE_LENGTH_LIST, MAX_TIMESTEPS_LIST
 
 
-def train_model(model:Model, dataset_id, dataset_prefix, epochs=50, batch_size=128, val_subset=None,
+def train_model(model:Model, dataset_id, dataset_prefix, dataset_fold_id=None, epochs=50, batch_size=128, val_subset=None,
                 cutoff=None, normalize_timeseries=False, learning_rate=1e-3):
     X_train, y_train, X_test, y_test, is_timeseries = load_dataset_at(dataset_id,
+                                                                      fold_index=dataset_fold_id,
                                                                       normalize_timeseries=normalize_timeseries)
     max_timesteps, sequence_length = calculate_dataset_metrics(X_train)
 
@@ -79,9 +78,10 @@ def train_model(model:Model, dataset_id, dataset_prefix, epochs=50, batch_size=1
               class_weight=class_weight, verbose=2, validation_data=(X_test, y_test))
 
 
-def evaluate_model(model:Model, dataset_id, dataset_prefix, batch_size=128, test_data_subset=None,
+def evaluate_model(model:Model, dataset_id, dataset_prefix, dataset_fold_id=None, batch_size=128, test_data_subset=None,
                    cutoff=None, normalize_timeseries=False):
     _, _, X_test, y_test, is_timeseries = load_dataset_at(dataset_id,
+                                                          fold_index=dataset_fold_id,
                                                           normalize_timeseries=normalize_timeseries)
     max_timesteps, sequence_length = calculate_dataset_metrics(X_test)
 
@@ -116,57 +116,6 @@ def evaluate_model(model:Model, dataset_id, dataset_prefix, batch_size=128, test
     print("Final Accuracy : ", accuracy)
 
     return accuracy
-
-
-def hyperparameter_search_over_model(model_gen, dataset_id, param_grid, cutoff=None,
-                                     normalize_timeseries=False):
-
-    X_train, y_train, _, _, is_timeseries = load_dataset_at(dataset_id,
-                                                            normalize_timeseries=normalize_timeseries)
-    max_timesteps, sequence_length = calculate_dataset_metrics(X_train)
-
-    if sequence_length != MAX_SEQUENCE_LENGTH_LIST[dataset_id]:
-        if cutoff is None:
-            choice = cutoff_choice(dataset_id, sequence_length)
-        else:
-            assert cutoff in ['pre', 'post'], 'Cutoff parameter value must be either "pre" or "post"'
-            choice = cutoff
-
-        if choice not in ['pre', 'post']:
-            return
-        else:
-            X_train, _ = cutoff_sequence(X_train, None, choice, dataset_id, sequence_length)
-
-    if not is_timeseries:
-        print("Model hyper parameters can only be searched for time series models")
-        return
-
-    classes = np.unique(y_train)
-    le = LabelEncoder()
-    y_ind = le.fit_transform(y_train.ravel())
-    recip_freq = len(y_train) / (len(le.classes_) *
-                                 np.bincount(y_ind).astype(np.float64))
-    class_weight = recip_freq[le.transform(classes)]
-
-    y_train = to_categorical(y_train, len(np.unique(y_train)))
-
-    clf = KerasClassifier(build_fn=model_gen,
-                          epochs=50,
-                          class_weight=class_weight,
-                          verbose=0)
-
-    grid = GridSearchCV(clf, param_grid=param_grid,
-                        n_jobs=1, verbose=10, cv=3)
-
-    result = grid.fit(X_train, y_train)
-
-    print("Best: %f using %s" % (result.best_score_, result.best_params_))
-    means = result.cv_results_['mean_test_score']
-    stds = result.cv_results_['std_test_score']
-    params = result.cv_results_['params']
-    for mean, stdev, param in zip(means, stds, params):
-        print("%f (%f) with: %r" % (mean, stdev, param))
-
 
 def set_trainable(layer, value):
    layer.trainable = value

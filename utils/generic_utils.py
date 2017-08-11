@@ -9,13 +9,19 @@ mpl.style.use('seaborn-paper')
 from utils.constants import TRAIN_FILES, TEST_FILES, MAX_SEQUENCE_LENGTH_LIST, NB_CLASSES_LIST
 
 
-def load_dataset_at(index, normalize_timeseries=False, verbose=True) -> (np.array, np.array):
+def load_dataset_at(index, fold_index=None, normalize_timeseries=False, verbose=True) -> (np.array, np.array):
     if verbose: print("Loading train / test dataset : ", TRAIN_FILES[index], TEST_FILES[index])
 
-    x_train_path = TRAIN_FILES[index] + "X_train.npy"
-    y_train_path = TRAIN_FILES[index] + "y_train.npy"
-    x_test_path = TEST_FILES[index] + "X_test.npy"
-    y_test_path = TEST_FILES[index] + "y_test.npy"
+    if fold_index is None:
+        x_train_path = TRAIN_FILES[index] + "X_train.npy"
+        y_train_path = TRAIN_FILES[index] + "y_train.npy"
+        x_test_path = TEST_FILES[index] + "X_test.npy"
+        y_test_path = TEST_FILES[index] + "y_test.npy"
+    else:
+        x_train_path = TRAIN_FILES[index] + "X_train_%d.npy" % fold_index
+        y_train_path = TRAIN_FILES[index] + "y_train_%d.npy" % fold_index
+        x_test_path = TEST_FILES[index] + "X_test_%d.npy" % fold_index
+        y_test_path = TEST_FILES[index] + "y_test_%d.npy" % fold_index
 
     if os.path.exists(x_train_path):
         X_train = np.load(x_train_path)

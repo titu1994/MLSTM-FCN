@@ -86,11 +86,21 @@ def generate_model_2():
 
 
 if __name__ == "__main__":
-    model = generate_model()
+    from keras import backend as K
+    import json
 
-    #train_model(model, DATASET_INDEX, dataset_prefix='ck', epochs=1000, batch_size=128)
+    scores = []
 
-    evaluate_model(model, DATASET_INDEX, dataset_prefix='ck', batch_size=128)
+    for i in range(10):
+        K.clear_session()
+
+        model = generate_model()
+        train_model(model, DATASET_INDEX, dataset_prefix='ck', dataset_fold_id=(i + 1), epochs=600, batch_size=128)
+        score = evaluate_model(model, DATASET_INDEX, dataset_prefix='ck', dataset_fold_id=(i + 1), batch_size=128)
+        scores.append(score)
+
+    with open('data/CK/scores.json', 'w') as f:
+        json.dump({'scores': scores}, f)
 
     #visualize_context_vector(model, DATASET_INDEX, dataset_prefix='ck',
     #                         visualize_sequence=True, visualize_classwise=True, limit=1)
