@@ -53,7 +53,7 @@ def generate_model_2():
     ip = Input(shape=(MAX_TIMESTEPS, MAX_SEQUENCE_LENGTH))
 
     x = Masking()(ip)
-    x = AttentionLSTM(8)(x)
+    x = AttentionLSTM(8, unroll=True)(x)
     x = Dropout(0.8)(x)
 
     #y = Permute((2, 1))(ip)
@@ -84,9 +84,9 @@ def generate_model_2():
 
 
 if __name__ == "__main__":
-    model = generate_model()
+    model = generate_model_2()
 
-    train_model(model, DATASET_INDEX, dataset_prefix='arabic', epochs=500, batch_size=128)
+    train_model(model, DATASET_INDEX, dataset_prefix='arabic', epochs=1000, batch_size=128)
 
     evaluate_model(model, DATASET_INDEX, dataset_prefix='arabic', batch_size=128)
 
