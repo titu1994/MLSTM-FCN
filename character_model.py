@@ -6,7 +6,7 @@ from utils.constants import MAX_SEQUENCE_LENGTH_LIST, NB_CLASSES_LIST, MAX_TIMES
 from utils.keras_utils import train_model, evaluate_model, set_trainable, visualize_context_vector, visualize_cam
 from utils.layer_utils import AttentionLSTM
 
-DATASET_INDEX = 1
+DATASET_INDEX = 2
 
 MAX_TIMESTEPS = MAX_TIMESTEPS_LIST[DATASET_INDEX]
 MAX_SEQUENCE_LENGTH = MAX_SEQUENCE_LENGTH_LIST[DATASET_INDEX]
@@ -18,8 +18,7 @@ TRAINABLE = True
 def generate_model():
     ip = Input(shape=(MAX_TIMESTEPS, MAX_SEQUENCE_LENGTH))
 
-    x = Permute((2, 1))(ip)
-    x = Masking()(x)
+    x = Masking()(ip)
     x = LSTM(128)(x)
     x = Dropout(0.8)(x)
 
@@ -53,8 +52,7 @@ def generate_model():
 def generate_model_2():
     ip = Input(shape=(MAX_TIMESTEPS, MAX_SEQUENCE_LENGTH))
 
-    x = Permute((2, 1))(ip)
-    x = Masking()(x)
+    x = Masking()(ip)
     x = AttentionLSTM(128)(x)
     x = Dropout(0.8)(x)
 
@@ -92,23 +90,23 @@ if __name__ == "__main__":
     ''' Train portion '''
     scores = []
 
-    # for i in range(10):
-    #     K.clear_session()
-    #
-    #     print("Begin iteration %d" % (i + 1))
-    #     print("*" * 80)
-    #     print()
-    #
-    #     model = generate_model() # change to generate_model_2()
-    #     train_model(model, DATASET_INDEX, dataset_prefix='ck', dataset_fold_id=(i + 1), epochs=600, batch_size=128)
-    #     score = evaluate_model(model, DATASET_INDEX, dataset_prefix='ck', dataset_fold_id=(i + 1), batch_size=128)
-    #     scores.append(score)
-    #
-    # with open('data/CK/scores.json', 'w') as f:
-    #     json.dump({'scores': scores}, f)
+    for i in range(10):
+        K.clear_session()
+
+        print("Begin iteration %d" % (i + 1))
+        print("*" * 80)
+        print()
+
+        model = generate_model() # change to generate_model_2()
+        train_model(model, DATASET_INDEX, dataset_prefix='character', dataset_fold_id=(i + 1), epochs=600, batch_size=128)
+        score = evaluate_model(model, DATASET_INDEX, dataset_prefix='character', dataset_fold_id=(i + 1), batch_size=128)
+        scores.append(score)
+
+    with open('data/character/scores.json', 'w') as f:
+        json.dump({'scores': scores}, f)
 
     ''' evaluate average score '''
-    with open('data/CK/scores.json', 'r') as f:
+    with open('data/character/scores.json', 'r') as f:
         results = json.load(f)
 
     scores = results['scores']
