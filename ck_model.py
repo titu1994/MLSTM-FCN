@@ -20,7 +20,7 @@ def generate_model():
 
     x = Permute((2, 1))(ip)
     x = Masking()(x)
-    x = LSTM(64)(x)
+    x = LSTM(128)(x)
     x = Dropout(0.8)(x)
 
     #y = Permute((2, 1))(ip)
@@ -55,7 +55,7 @@ def generate_model_2():
 
     x = Permute((2, 1))(ip)
     x = Masking()(x)
-    x = AttentionLSTM(64)(x)
+    x = AttentionLSTM(128)(x)
     x = Dropout(0.8)(x)
 
     #y = Permute((2, 1))(ip)
@@ -90,29 +90,30 @@ if __name__ == "__main__":
     import json
 
     ''' Train portion '''
-    scores = []
-
-    for i in range(10):
-        K.clear_session()
-
-        print("Begin iteration %d" % (i + 1))
-        print("*" * 80)
-        print()
-
-        model = generate_model() # change to generate_model_2()
-        train_model(model, DATASET_INDEX, dataset_prefix='ck', dataset_fold_id=(i + 1), epochs=600, batch_size=128)
-        score = evaluate_model(model, DATASET_INDEX, dataset_prefix='ck', dataset_fold_id=(i + 1), batch_size=128)
-        scores.append(score)
-
-    with open('data/CK/scores.json', 'w') as f:
-        json.dump({'scores': scores}, f)
-
+    # scores = []
+    #
+    # for i in range(10):
+    #     K.clear_session()
+    #
+    #     print("Begin iteration %d" % (i + 1))
+    #     print("*" * 80)
+    #     print()
+    #
+    #     model = generate_model() # change to generate_model_2()
+    #     train_model(model, DATASET_INDEX, dataset_prefix='ck', dataset_fold_id=(i + 1), epochs=600, batch_size=128)
+    #     score = evaluate_model(model, DATASET_INDEX, dataset_prefix='ck', dataset_fold_id=(i + 1), batch_size=128)
+    #     scores.append(score)
+    #
+    # with open('data/CK/scores.json', 'w') as f:
+    #     json.dump({'scores': scores}, f)
+    #
     # ''' evaluate average score '''
     with open('data/CK/scores.json', 'r') as f:
         results = json.load(f)
 
     scores = results['scores']
     avg_score = sum(scores) / len(scores)
+    print("Scores : ", scores)
     print("Average score over 10 epochs : ", avg_score)
 
     #visualize_context_vector(model, DATASET_INDEX, dataset_prefix='ck',
