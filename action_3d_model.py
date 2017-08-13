@@ -55,7 +55,7 @@ def generate_model_2():
 
     x = Permute((2, 1))(ip)
     x = Masking()(x)
-    x = AttentionLSTM(8)(x)
+    x = AttentionLSTM(128)(x)
     x = Dropout(0.8)(x)
 
     #y = Permute((2, 1))(ip)
@@ -86,8 +86,8 @@ def generate_model_2():
 
 
 if __name__ == "__main__":
-    model = generate_model()
+    model = generate_model_2()
 
-    train_model(model, DATASET_INDEX, dataset_prefix='action_3d', epochs=1000, batch_size=128)
+    #train_model(model, DATASET_INDEX, dataset_prefix='action_3d', epochs=600, batch_size=128)
 
     evaluate_model(model, DATASET_INDEX, dataset_prefix='action_3d', batch_size=128)
