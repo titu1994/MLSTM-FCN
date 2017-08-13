@@ -82,7 +82,7 @@ print('max nb variables test : ', max_variables_test)
 print("# of instances where test vars > %d : " % max_nb_variables, count)
 
 print("\nSince there is only %d instance where test # variables > %d (max # of variables in train), "
-      "we clip the specific instance to match %d variables\n" % (max_nb_variables, count, max_nb_variables))
+      "we clip the specific instance to match %d variables\n" % (count, max_nb_variables, max_nb_variables))
 
 # pad ending with zeros to get numpy arrays
 for i in range(X_test.shape[0]):
