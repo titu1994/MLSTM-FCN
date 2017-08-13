@@ -2,21 +2,21 @@ from keras.models import Model
 from keras.layers import Input, PReLU, Dense, LSTM, multiply, concatenate, Activation, Masking
 from keras.layers import Conv1D, BatchNormalization, GlobalAveragePooling1D, Permute, Dropout
 
-from utils.constants import MAX_SEQUENCE_LENGTH_LIST, NB_CLASSES_LIST, MAX_TIMESTEPS_LIST
-from utils.keras_utils import train_model, evaluate_model, set_trainable, visualize_context_vector, visualize_cam
+from utils.constants import MAX_NB_VARIABLES, NB_CLASSES_LIST, MAX_TIMESTEPS_LIST
+from utils.keras_utils import train_model, evaluate_model, set_trainable
 from utils.layer_utils import AttentionLSTM
 
 DATASET_INDEX = 2
 
 MAX_TIMESTEPS = MAX_TIMESTEPS_LIST[DATASET_INDEX]
-MAX_SEQUENCE_LENGTH = MAX_SEQUENCE_LENGTH_LIST[DATASET_INDEX]
+MAX_NB_VARIABLES = MAX_NB_VARIABLES[DATASET_INDEX]
 NB_CLASS = NB_CLASSES_LIST[DATASET_INDEX]
 
 TRAINABLE = True
 
 
 def generate_model():
-    ip = Input(shape=(MAX_TIMESTEPS, MAX_SEQUENCE_LENGTH))
+    ip = Input(shape=(MAX_TIMESTEPS, MAX_NB_VARIABLES))
 
     x = Masking()(ip)
     x = LSTM(128)(x)
@@ -50,7 +50,7 @@ def generate_model():
 
 
 def generate_model_2():
-    ip = Input(shape=(MAX_TIMESTEPS, MAX_SEQUENCE_LENGTH))
+    ip = Input(shape=(MAX_TIMESTEPS, MAX_NB_VARIABLES))
 
     x = Masking()(ip)
     x = AttentionLSTM(128)(x)

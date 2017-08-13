@@ -10,22 +10,22 @@ y = arabic_training_dict['train_labels']
 
 X = X[0]
 
-max_sequence_length = -np.inf
-min_sequence_length = np.inf
+max_nb_variables = -np.inf
+min_nb_variables = np.inf
 
 for i in range(X.shape[0]):
     var_count = X[i].shape[-1]
 
-    if var_count > max_sequence_length:
-        max_sequence_length = var_count
+    if var_count > max_nb_variables:
+        max_nb_variables = var_count
 
-    if var_count < min_sequence_length:
-        min_sequence_length = var_count
+    if var_count < min_nb_variables:
+        min_nb_variables = var_count
 
-print('max sequence length : ', max_sequence_length)
-print('min sequence length : ', min_sequence_length)
+print('max number variables : ', max_nb_variables)
+print('min number variables : ', min_nb_variables)
 
-X_train = np.zeros((X.shape[0], X[0].shape[0], max_sequence_length))
+X_train = np.zeros((X.shape[0], X[0].shape[0], max_nb_variables))
 y_train = y[0]
 
 # pad ending with zeros to get numpy arrays
@@ -35,14 +35,13 @@ for i in range(X_train.shape[0]):
 
 ''' Load test set '''
 arabic_test_dict = loadmat(arabic_path + "test_set_arabic.mat")
-print(arabic_test_dict.keys())
 X = arabic_test_dict['test_set']
 y = arabic_test_dict['test_labels']
 
 X = X[0]
 y = y[0]
 
-X_test = np.zeros((X.shape[0], X[0].shape[0], max_sequence_length))
+X_test = np.zeros((X.shape[0], X[0].shape[0], max_nb_variables))
 y_test = y
 
 # pad ending with zeros to get numpy arrays

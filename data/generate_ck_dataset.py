@@ -5,8 +5,8 @@ import numpy as np
 ck_path = r'../data/CK/'
 DATA = sio.loadmat(ck_path + 'randomperm_CK.mat')
 
-max_sequence_length = None
-min_sequence_length = None
+max_number_variables = None
+min_number_variables = None
 no_folds = 10
 
 for k in range(10):
@@ -33,25 +33,25 @@ for k in range(10):
     y = DATA['new_labels'][0, (np.array(trainind) - 1)]  ###Train Labels
 
     ''' Load train Dataset '''
-    if max_sequence_length is None:
-        max_sequence_length = -np.inf
-        min_sequence_length = np.inf
+    if max_number_variables is None:
+        max_number_variables = -np.inf
+        min_number_variables = np.inf
 
         for i in range(X.shape[0]):
             var_count = X[i].shape[-1]
 
-            if var_count > max_sequence_length:
-                max_sequence_length = var_count
+            if var_count > max_number_variables:
+                max_number_variables = var_count
 
-            if var_count < min_sequence_length:
-                min_sequence_length = var_count
+            if var_count < min_number_variables:
+                min_number_variables = var_count
 
-        print('max sequence length : ', max_sequence_length)
-        print('min sequence length : ', min_sequence_length)
+        print('max number variables : ', max_number_variables)
+        print('min number variables : ', min_number_variables)
         print('-' * 80)
         print()
 
-    X_train = np.zeros((X.shape[0], X[0].shape[0], max_sequence_length))
+    X_train = np.zeros((X.shape[0], X[0].shape[0], max_number_variables))
     y_train = y
 
     # pad ending with zeros to get numpy arrays
@@ -63,7 +63,7 @@ for k in range(10):
     X = DATA['new_X'][0, (np.array(testind) - 1)]  ####Test Data
     y = DATA['new_labels'][0, (np.array(testind) - 1)]  ####Test Labels
 
-    X_test = np.zeros((X.shape[0], X[0].shape[0], max_sequence_length))
+    X_test = np.zeros((X.shape[0], X[0].shape[0], max_number_variables))
     y_test = y
 
     # pad ending with zeros to get numpy arrays

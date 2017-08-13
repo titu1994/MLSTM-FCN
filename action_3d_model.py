@@ -6,7 +6,7 @@ from utils.constants import MAX_NB_VARIABLES, NB_CLASSES_LIST, MAX_TIMESTEPS_LIS
 from utils.keras_utils import train_model, evaluate_model, set_trainable
 from utils.layer_utils import AttentionLSTM
 
-DATASET_INDEX = 0
+DATASET_INDEX = 3
 
 MAX_TIMESTEPS = MAX_TIMESTEPS_LIST[DATASET_INDEX]
 MAX_NB_VARIABLES = MAX_NB_VARIABLES[DATASET_INDEX]
@@ -18,8 +18,9 @@ TRAINABLE = True
 def generate_model():
     ip = Input(shape=(MAX_TIMESTEPS, MAX_NB_VARIABLES))
 
-    x = Masking()(ip)
-    x = LSTM(8)(x)
+    x = Permute((2, 1))(ip)
+    x = Masking()(x)
+    x = LSTM(128)(x)
     x = Dropout(0.8)(x)
 
     #y = Permute((2, 1))(ip)
@@ -52,7 +53,8 @@ def generate_model():
 def generate_model_2():
     ip = Input(shape=(MAX_TIMESTEPS, MAX_NB_VARIABLES))
 
-    x = Masking()(ip)
+    x = Permute((2, 1))(ip)
+    x = Masking()(x)
     x = AttentionLSTM(8)(x)
     x = Dropout(0.8)(x)
 
@@ -84,13 +86,8 @@ def generate_model_2():
 
 
 if __name__ == "__main__":
-    model = generate_model_2()
+    model = generate_model()
 
-    #train_model(model, DATASET_INDEX, dataset_prefix='arabic', epochs=1000, batch_size=128)
+    train_model(model, DATASET_INDEX, dataset_prefix='action_3d', epochs=1000, batch_size=128)
 
-    evaluate_model(model, DATASET_INDEX, dataset_prefix='arabic', batch_size=128)
-
-    #visualize_context_vector(model, DATASET_INDEX, dataset_prefix='arabic',
-    #                         visualize_sequence=True, visualize_classwise=True, limit=1)
-
-    # visualize_cam(model, DATASET_INDEX, dataset_prefix='arabic', class_id=0)
+    evaluate_model(model, DATASET_INDEX, dataset_prefix='action_3d', batch_size=128)
