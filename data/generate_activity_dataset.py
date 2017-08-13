@@ -7,35 +7,29 @@ def find1(a, func):
     return (np.array(qqq) + 1)
 
 
-action_3d_path = r'../data/Action3D/'
+activity_path = r"../data/Activity/"
 
-DATA = sio.loadmat(action_3d_path + 'joint_feat_coordinate.mat')
+DATA = sio.loadmat(activity_path + 'joint3D_feature_noFFT.mat')
 
-feat = DATA['feat'][0]
-if_contain = DATA['if_contain'][0]
+Joint3D_feature = DATA['Joint3D_feature'][0]
 labels = DATA['labels'][0]
 
-data = feat
-
-K = 20
+data = Joint3D_feature
+K = 16
 train_ind = []
 test_ind = []
-testActors = [6, 7, 8, 9, 10]
-i = 1
+testActors = [1, 2, 3, 4, 5]
+testClass = range(1, 17)
 true_i = 0
 
-for a in range(1, 21):
+for a in range(1, 17):
     for j in range(1, 11):
-        for e in range(1, 4):
-            if (if_contain[i - 1] == 0):
-                i = i + 1
-                continue
+        for e in range(1, 3):
             true_i = true_i + 1
             if not (np.all((find1(testActors, lambda x: x == j)) == 0)):
                 test_ind.append(true_i)
             else:
                 train_ind.append(true_i)
-            i = i + 1
 
 ''' Load train set '''
 X = data[(np.array(train_ind) - 1)]
@@ -94,7 +88,7 @@ print("Train dataset : ", X_train.shape, y_train.shape)
 print("Test dataset : ", X_test.shape, y_test.shape)
 print("Nb classes : ", len(np.unique(y_train)))
 
-np.save(action_3d_path + 'X_train.npy', X_train)
-np.save(action_3d_path + 'y_train.npy', y_train)
-np.save(action_3d_path + 'X_test.npy', X_test)
-np.save(action_3d_path + 'y_test.npy', y_test)
+np.save(activity_path + 'X_train.npy', X_train)
+np.save(activity_path + 'y_train.npy', y_train)
+np.save(activity_path + 'X_test.npy', X_test)
+np.save(activity_path + 'y_test.npy', y_test)
