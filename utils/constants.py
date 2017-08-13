@@ -27,4 +27,5 @@ MAX_NB_VARIABLES = [93,  # 0
 NB_CLASSES_LIST = [10, # 0
                    7, # 1
                    20, # 2
+                   20, # 3
                    ]
