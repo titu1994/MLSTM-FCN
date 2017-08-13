@@ -20,7 +20,7 @@ from keras.callbacks import ModelCheckpoint, ReduceLROnPlateau
 from keras import backend as K
 
 from utils.generic_utils import load_dataset_at, calculate_dataset_metrics, cutoff_choice, \
-                                cutoff_sequence, plot_dataset
+                                cutoff_sequence
 from utils.constants import MAX_NB_VARIABLES, MAX_TIMESTEPS_LIST
 
 
