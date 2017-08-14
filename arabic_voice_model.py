@@ -22,7 +22,7 @@ def generate_model():
     ip = Input(shape=(MAX_TIMESTEPS, MAX_NB_VARIABLES))
 
     x = Masking()(ip)
-    x = LSTM(MAX_NB_VARIABLES // 2, unroll=True, return_sequences=True,
+    x = LSTM(37, unroll=True, return_sequences=True,
              kernel_regularizer=l2(regularization_weight), recurrent_regularizer=l2(regularization_weight))(x)
     x = LSTM(128, unroll=True, return_sequences=False,
              kernel_regularizer=l2(regularization_weight), recurrent_regularizer=l2(regularization_weight))(x)
@@ -100,7 +100,7 @@ def generate_model_2():
 
 
 if __name__ == "__main__":
-    model = generate_model()
+    model = generate_model_2()
 
     train_model(model, DATASET_INDEX, dataset_prefix='arabic_voice', epochs=600, batch_size=128)
 
