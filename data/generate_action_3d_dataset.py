@@ -62,7 +62,10 @@ for i in range(X_train.shape[0]):
     var_count = X[i].shape[-1]
     X_train[i, :, :var_count] = X[i]
 
-X_train = (X_train - X_train.mean(axis=0)) / (X_train.std(axis=0) + 1e-8)
+X_train_mean = X_train.mean()
+X_train_std = X_train.std()
+print("Train Mean +- std : ", X_train_mean, X_train_std)
+X_train = (X_train - X_train_mean) / (X_train_std + 1e-8)
 
 ''' Load test set '''
 X = data[(np.array(test_ind) - 1)]
@@ -91,7 +94,7 @@ for i in range(X_test.shape[0]):
     var_count = X[i].shape[-1]
     X_test[i, :, :var_count] = X[i][:, :max_nb_variables]
 
-X_test = (X_test - X_test.mean(axis=0)) / (X_test.std(axis=0) + 1e-8)
+X_test = (X_test - X_train_mean) / (X_train_std + 1e-8)
 
 ''' Save the datasets '''
 print("Train dataset : ", X_train.shape, y_train.shape)
