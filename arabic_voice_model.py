@@ -23,7 +23,7 @@ def generate_model():
 
     x = Masking()(ip)
     x = LSTM(64, unroll=True,
-             kernel_regularizer=l2(regularization_weight), recurrent_regularizer=l2(1e-3))(x)
+             kernel_regularizer=l2(regularization_weight), recurrent_regularizer=l2(regularization_weight))(x)
     x = Dropout(0.5)(x)
 
     #y = Permute((2, 1))(ip)
@@ -60,19 +60,23 @@ def generate_model_2():
     ip = Input(shape=(MAX_TIMESTEPS, MAX_NB_VARIABLES))
 
     x = Masking()(ip)
-    x = AttentionLSTM(128, unroll=True)(x)
+    x = AttentionLSTM(64, unroll=True, kernel_regularizer=l2(regularization_weight),
+                      recurrent_regularizer=l2(regularization_weight), attention_regularizer=l2(regularization_weight))(x)
     x = Dropout(0.8)(x)
 
     #y = Permute((2, 1))(ip)
-    y = Conv1D(128, 8, padding='same', kernel_initializer='he_uniform')(ip)
+    y = Conv1D(128, 8, padding='same', kernel_initializer='he_uniform',
+               kernel_regularizer=l2(regularization_weight))(ip)
     y = BatchNormalization()(y)
     y = Activation('relu')(y)
 
-    y = Conv1D(256, 5, padding='same', kernel_initializer='he_uniform')(y)
+    y = Conv1D(256, 5, padding='same', kernel_initializer='he_uniform',
+               kernel_regularizer=l2(regularization_weight))(y)
     y = BatchNormalization()(y)
     y = Activation('relu')(y)
 
-    y = Conv1D(128, 3, padding='same', kernel_initializer='he_uniform')(y)
+    y = Conv1D(128, 3, padding='same', kernel_initializer='he_uniform',
+               kernel_regularizer=l2(regularization_weight))(y)
     y = BatchNormalization()(y)
     y = Activation('relu')(y)
 
@@ -93,6 +97,6 @@ def generate_model_2():
 if __name__ == "__main__":
     model = generate_model()
 
-    train_model(model, DATASET_INDEX, dataset_prefix='arabic_voice', epochs=1000, batch_size=128)
+    train_model(model, DATASET_INDEX, dataset_prefix='arabic_voice', epochs=600, batch_size=128)
 
     evaluate_model(model, DATASET_INDEX, dataset_prefix='arabic_voice', batch_size=128)
