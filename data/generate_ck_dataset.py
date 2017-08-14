@@ -75,6 +75,8 @@ for k in range(10):
     print("Dataset Fold #%d" % index_fold)
     print("Train dataset : ", X_train.shape, y_train.shape)
     print("Test dataset : ", X_test.shape, y_test.shape)
+    print("Train dataset metrics : ", X_train.mean(), X_train.std())
+    print("Test dataset : ", X_test.mean(), X_test.std())
     print("Nb classes : ", len(np.unique(y_train)), "Classes : ", np.unique(y_train))
 
     np.save(ck_path + 'X_train_%d.npy' % index_fold, X_train)
