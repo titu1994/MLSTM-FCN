@@ -5,8 +5,7 @@ import numpy as np
 ck_path = r'../data/CK/'
 DATA = sio.loadmat(ck_path + 'randomperm_CK.mat')
 
-max_number_variables = None
-min_number_variables = None
+var_list = None
 no_folds = 10
 
 for k in range(10):
@@ -33,21 +32,21 @@ for k in range(10):
     y = DATA['new_labels'][0, (np.array(trainind) - 1)]  ###Train Labels
 
     ''' Load train Dataset '''
-    if max_number_variables is None:
-        max_number_variables = -np.inf
-        min_number_variables = np.inf
-
+    if var_list is None:
+        var_list = []
         for i in range(X.shape[0]):
             var_count = X[i].shape[-1]
+            var_list.append(var_count)
 
-            if var_count > max_number_variables:
-                max_number_variables = var_count
+        var_list = np.array(var_list)
+        max_nb_variables = var_list.max()
+        min_nb_variables = var_list.min()
+        median_nb_variables = np.median(var_list)
 
-            if var_count < min_number_variables:
-                min_number_variables = var_count
+        print('max nb variables train : ', max_nb_variables)
+        print('min nb variables train : ', min_nb_variables)
+        print('median nb variables train : ', median_nb_variables)
 
-        print('max number variables : ', max_number_variables)
-        print('min number variables : ', min_number_variables)
         print('-' * 80)
         print()
 

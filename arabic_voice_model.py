@@ -1,5 +1,5 @@
 from keras.models import Model
-from keras.layers import Input, PReLU, Dense, LSTM, multiply, concatenate, Activation, Masking
+from keras.layers import Input, PReLU, Dense, LSTM, add, concatenate, Activation, Masking
 from keras.layers import Conv1D, BatchNormalization, GlobalAveragePooling1D, Permute, Dropout
 from keras.regularizers import l2
 
@@ -22,9 +22,11 @@ def generate_model():
     ip = Input(shape=(MAX_TIMESTEPS, MAX_NB_VARIABLES))
 
     x = Masking()(ip)
-    x = LSTM(64, unroll=True,
+    x = LSTM(MAX_NB_VARIABLES // 2, unroll=True, return_sequences=True,
              kernel_regularizer=l2(regularization_weight), recurrent_regularizer=l2(regularization_weight))(x)
-    x = Dropout(0.5)(x)
+    x = LSTM(128, unroll=True, return_sequences=False,
+             kernel_regularizer=l2(regularization_weight), recurrent_regularizer=l2(regularization_weight))(x)
+    x = Dropout(0.8)(x)
 
     #y = Permute((2, 1))(ip)
     y = Conv1D(128, 8, padding='same', kernel_initializer='he_uniform',
@@ -60,7 +62,10 @@ def generate_model_2():
     ip = Input(shape=(MAX_TIMESTEPS, MAX_NB_VARIABLES))
 
     x = Masking()(ip)
-    x = AttentionLSTM(64, unroll=True, kernel_regularizer=l2(regularization_weight),
+
+    x = AttentionLSTM(37, unroll=True, return_sequences=True, kernel_regularizer=l2(regularization_weight),
+                      recurrent_regularizer=l2(regularization_weight), attention_regularizer=l2(regularization_weight))(x)
+    x = AttentionLSTM(128, unroll=True, return_sequences=False, kernel_regularizer=l2(regularization_weight),
                       recurrent_regularizer=l2(regularization_weight), attention_regularizer=l2(regularization_weight))(x)
     x = Dropout(0.5)(x)
 

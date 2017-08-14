@@ -34,19 +34,20 @@ for a in range(1, 17):
 ''' Load train set '''
 X = data[(np.array(train_ind) - 1)]
 
-max_nb_variables = -np.inf
-min_nb_variables = np.inf
-
+var_list = []
 for i in range(X.shape[0]):
     var_count = X[i].shape[-1]
+    var_list.append(var_count)
 
-    if var_count > max_nb_variables:
-        max_nb_variables = var_count
-
-    if var_count < min_nb_variables:
-        min_nb_variables = var_count
+var_list = np.array(var_list)
+max_nb_variables = var_list.max()
+min_nb_variables = var_list.min()
+median_nb_variables = np.median(var_list)
 
 print('max nb variables train : ', max_nb_variables)
+print('min nb variables train : ', min_nb_variables)
+print('median nb variables train : ', median_nb_variables)
+
 
 X_train = np.zeros((X.shape[0], X[0].shape[0], max_nb_variables))
 y_train = labels[(np.array(train_ind) - 1)]

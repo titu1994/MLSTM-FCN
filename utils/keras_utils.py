@@ -24,6 +24,10 @@ from utils.generic_utils import load_dataset_at, calculate_dataset_metrics, cuto
 from utils.constants import MAX_NB_VARIABLES, MAX_TIMESTEPS_LIST
 
 
+def multi_label_log_loss(y_pred, y_true):
+    return K.sum(K.binary_crossentropy(y_pred, y_true), axis=-1)
+
+
 def train_model(model:Model, dataset_id, dataset_prefix, dataset_fold_id=None, epochs=50, batch_size=128, val_subset=None,
                 cutoff=None, normalize_timeseries=False, learning_rate=1e-3):
     X_train, y_train, X_test, y_test, is_timeseries = load_dataset_at(dataset_id,
