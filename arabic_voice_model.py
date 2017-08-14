@@ -62,7 +62,7 @@ def generate_model_2():
     x = Masking()(ip)
     x = AttentionLSTM(64, unroll=True, kernel_regularizer=l2(regularization_weight),
                       recurrent_regularizer=l2(regularization_weight), attention_regularizer=l2(regularization_weight))(x)
-    x = Dropout(0.8)(x)
+    x = Dropout(0.5)(x)
 
     #y = Permute((2, 1))(ip)
     y = Conv1D(128, 8, padding='same', kernel_initializer='he_uniform',
