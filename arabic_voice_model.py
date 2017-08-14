@@ -19,7 +19,7 @@ def generate_model():
     ip = Input(shape=(MAX_TIMESTEPS, MAX_NB_VARIABLES))
 
     x = Masking()(ip)
-    x = LSTM(128, unroll=True)(x)
+    x = LSTM(8, unroll=True)(x)
     x = Dropout(0.8)(x)
 
     #y = Permute((2, 1))(ip)

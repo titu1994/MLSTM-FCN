@@ -62,6 +62,8 @@ for i in range(X_train.shape[0]):
     var_count = X[i].shape[-1]
     X_train[i, :, :var_count] = X[i]
 
+X_train = (X_train - X_train.mean(axis=0)) / (X_train.std(axis=0) + 1e-8)
+
 ''' Load test set '''
 X = data[(np.array(test_ind) - 1)]
 
@@ -89,9 +91,13 @@ for i in range(X_test.shape[0]):
     var_count = X[i].shape[-1]
     X_test[i, :, :var_count] = X[i][:, :max_nb_variables]
 
+X_test = (X_test - X_test.mean(axis=0)) / (X_test.std(axis=0) + 1e-8)
+
 ''' Save the datasets '''
 print("Train dataset : ", X_train.shape, y_train.shape)
 print("Test dataset : ", X_test.shape, y_test.shape)
+print("Train dataset metrics : ", X_train.mean(), X_train.std())
+print("Test dataset : ", X_test.mean(), X_test.std())
 print("Nb classes : ", len(np.unique(y_train)))
 
 np.save(action_3d_path + 'X_train.npy', X_train)
