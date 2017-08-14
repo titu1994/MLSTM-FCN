@@ -1,6 +1,7 @@
 from keras.models import Model
 from keras.layers import Input, PReLU, Dense, LSTM, multiply, concatenate, Activation, Masking
 from keras.layers import Conv1D, BatchNormalization, GlobalAveragePooling1D, Permute, Dropout
+from keras.regularizers import l2
 
 from utils.constants import MAX_NB_VARIABLES, NB_CLASSES_LIST, MAX_TIMESTEPS_LIST
 from utils.keras_utils import train_model, evaluate_model, set_trainable
@@ -14,24 +15,30 @@ NB_CLASS = NB_CLASSES_LIST[DATASET_INDEX]
 
 TRAINABLE = True
 
+regularization_weight = 5e-4
+
 
 def generate_model():
     ip = Input(shape=(MAX_TIMESTEPS, MAX_NB_VARIABLES))
 
     x = Masking()(ip)
-    x = LSTM(8, unroll=True)(x)
-    x = Dropout(0.8)(x)
+    x = LSTM(64, unroll=True,
+             kernel_regularizer=l2(regularization_weight), recurrent_regularizer=l2(1e-3))(x)
+    x = Dropout(0.5)(x)
 
     #y = Permute((2, 1))(ip)
-    y = Conv1D(128, 8, padding='same', kernel_initializer='he_uniform')(ip)
+    y = Conv1D(128, 8, padding='same', kernel_initializer='he_uniform',
+               kernel_regularizer=l2(regularization_weight))(ip)
     y = BatchNormalization()(y)
     y = Activation('relu')(y)
 
-    y = Conv1D(256, 5, padding='same', kernel_initializer='he_uniform')(y)
+    y = Conv1D(256, 5, padding='same', kernel_initializer='he_uniform',
+               kernel_regularizer=l2(regularization_weight))(y)
     y = BatchNormalization()(y)
     y = Activation('relu')(y)
 
-    y = Conv1D(128, 3, padding='same', kernel_initializer='he_uniform')(y)
+    y = Conv1D(128, 3, padding='same', kernel_initializer='he_uniform',
+               kernel_regularizer=l2(regularization_weight))(y)
     y = BatchNormalization()(y)
     y = Activation('relu')(y)
 
