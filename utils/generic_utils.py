@@ -45,7 +45,9 @@ def load_dataset_at(index, fold_index=None, normalize_timeseries=False, verbose=
     if is_timeseries:
         # scale the values
         if normalize_timeseries:
-            X_train = (X_train - X_train.mean(axis=0)) / (X_train.std(axis=0))
+            X_train_mean = X_train.mean()
+            X_train_std = X_train.std()
+            X_train = (X_train - X_train_mean) / (X_train_std + 1e-8)
 
     if verbose: print("Finished processing train dataset..")
 
@@ -56,7 +58,7 @@ def load_dataset_at(index, fold_index=None, normalize_timeseries=False, verbose=
     if is_timeseries:
         # scale the values
         if normalize_timeseries:
-            X_test = (X_test - X_test.mean(axis=0)) / (X_test.std(axis=0))
+            X_test = (X_test - X_train_mean) / (X_train_std + 1e-8)
 
     if verbose:
         print("Finished loading test dataset..")
