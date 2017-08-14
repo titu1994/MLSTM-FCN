@@ -1,6 +1,6 @@
 from keras.models import Model
-from keras.layers import Input, PReLU, Dense, LSTM, multiply, concatenate, Activation, Masking
-from keras.layers import Conv1D, BatchNormalization, GlobalAveragePooling1D, Permute, Dropout
+from keras.layers import Input, PReLU, Dense, LSTM, multiply, concatenate, Activation, Masking, AveragePooling1D
+from keras.layers import Conv1D, BatchNormalization, GlobalAveragePooling1D, Permute, Dropout, Lambda
 
 from utils.constants import MAX_NB_VARIABLES, NB_CLASSES_LIST, MAX_TIMESTEPS_LIST
 from utils.keras_utils import train_model, evaluate_model, set_trainable
@@ -20,7 +20,7 @@ def generate_model():
 
     x = Permute((2, 1))(ip)
     x = Masking()(x)
-    x = LSTM(128)(x)
+    x = LSTM(384)(x)
     x = Dropout(0.8)(x)
 
     #y = Permute((2, 1))(ip)
@@ -55,10 +55,9 @@ def generate_model_2():
 
     x = Permute((2, 1))(ip)
     x = Masking()(x)
-    x = AttentionLSTM(128)(x)
+    x = AttentionLSTM(128, unroll=True)(x)
     x = Dropout(0.8)(x)
 
-    #y = Permute((2, 1))(ip)
     y = Conv1D(128, 8, padding='same', kernel_initializer='he_uniform')(ip)
     y = BatchNormalization()(y)
     y = Activation('relu')(y)
@@ -86,8 +85,8 @@ def generate_model_2():
 
 
 if __name__ == "__main__":
-    model = generate_model()
+    model = generate_model_2()
 
-    train_model(model, DATASET_INDEX, dataset_prefix='activity', epochs=600, batch_size=128)
+    #train_model(model, DATASET_INDEX, dataset_prefix='activity', epochs=1000, batch_size=128)
 
     evaluate_model(model, DATASET_INDEX, dataset_prefix='activity', batch_size=128)
