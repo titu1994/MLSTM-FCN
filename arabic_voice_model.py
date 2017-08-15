@@ -22,9 +22,7 @@ def generate_model():
     ip = Input(shape=(MAX_TIMESTEPS, MAX_NB_VARIABLES))
 
     x = Masking()(ip)
-    x = LSTM(37, unroll=True, return_sequences=True,
-             kernel_regularizer=l2(regularization_weight), recurrent_regularizer=l2(regularization_weight))(x)
-    x = LSTM(128, unroll=True, return_sequences=False,
+    x = LSTM(128, unroll=True,
              kernel_regularizer=l2(regularization_weight), recurrent_regularizer=l2(regularization_weight))(x)
     x = Dropout(0.8)(x)
 
@@ -62,10 +60,7 @@ def generate_model_2():
     ip = Input(shape=(MAX_TIMESTEPS, MAX_NB_VARIABLES))
 
     x = Masking()(ip)
-
-    x = AttentionLSTM(37, unroll=True, return_sequences=True, kernel_regularizer=l2(regularization_weight),
-                      recurrent_regularizer=l2(regularization_weight), attention_regularizer=l2(regularization_weight))(x)
-    x = AttentionLSTM(128, unroll=True, return_sequences=False, kernel_regularizer=l2(regularization_weight),
+    x = AttentionLSTM(128, unroll=True, kernel_regularizer=l2(regularization_weight),
                       recurrent_regularizer=l2(regularization_weight), attention_regularizer=l2(regularization_weight))(x)
     x = Dropout(0.5)(x)
 
