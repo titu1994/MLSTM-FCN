@@ -16,7 +16,7 @@ TRAINABLE = True
 
 
 def generate_model():
-    ip = Input(shape=(MAX_TIMESTEPS, MAX_NB_VARIABLES))
+    ip = Input(shape=(MAX_NB_VARIABLES, MAX_TIMESTEPS))
 
     x = Masking()(ip)
     x = LSTM(128)(x)
@@ -50,7 +50,7 @@ def generate_model():
 
 
 def generate_model_2():
-    ip = Input(shape=(MAX_TIMESTEPS, MAX_NB_VARIABLES))
+    ip = Input(shape=(MAX_NB_VARIABLES, MAX_TIMESTEPS))
 
     x = Masking()(ip)
     x = AttentionLSTM(128)(x)

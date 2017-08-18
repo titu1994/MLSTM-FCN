@@ -40,16 +40,16 @@ for i in range(X.shape[0]):
     var_list.append(var_count)
 
 var_list = np.array(var_list)
-max_nb_variables = var_list.max()
-min_nb_variables = var_list.min()
-median_nb_variables = np.median(var_list)
+max_nb_timesteps = var_list.max()
+min_nb_timesteps = var_list.min()
+median_nb_timesteps = np.median(var_list)
 
-print('max nb variables train : ', max_nb_variables)
-print('min nb variables train : ', min_nb_variables)
-print('median nb variables train : ', median_nb_variables)
+print('max nb timesteps train : ', max_nb_timesteps)
+print('min nb timesteps train : ', min_nb_timesteps)
+print('median nb timesteps train : ', median_nb_timesteps)
 
 
-X_train = np.zeros((X.shape[0], X[0].shape[0], max_nb_variables))
+X_train = np.zeros((X.shape[0], X[0].shape[0], max_nb_timesteps))
 y_train = labels[(np.array(train_ind) - 1)]
 
 # pad ending with zeros to get numpy arrays
@@ -60,7 +60,7 @@ for i in range(X_train.shape[0]):
 ''' Load test set '''
 X = data[(np.array(test_ind) - 1)]
 
-X_test = np.zeros((X.shape[0], X[0].shape[0], max_nb_variables))
+X_test = np.zeros((X.shape[0], X[0].shape[0], max_nb_timesteps))
 y_test = labels[(np.array(test_ind) - 1)]
 
 max_variables_test = -np.inf
@@ -69,20 +69,20 @@ count = 0
 for i in range(X.shape[0]):
     var_count = X[i].shape[-1]
 
-    if var_count > max_nb_variables:
+    if var_count > max_nb_timesteps:
         max_variables_test = var_count
         count += 1
 
 print('max nb variables test : ', max_variables_test)
-print("# of instances where test vars > %d : " % max_nb_variables, count)
+print("# of instances where test vars > %d : " % max_nb_timesteps, count)
 
 print("\nSince there is only %d instance where test # variables > %d (max # of variables in train), "
-      "we clip the specific instance to match %d variables\n" % (count, max_nb_variables, max_nb_variables))
+      "we clip the specific instance to match %d variables\n" % (count, max_nb_timesteps, max_nb_timesteps))
 
 # pad ending with zeros to get numpy arrays
 for i in range(X_test.shape[0]):
     var_count = X[i].shape[-1]
-    X_test[i, :, :var_count] = X[i][:, :max_nb_variables]
+    X_test[i, :, :var_count] = X[i][:, :max_nb_timesteps]
 
 ''' Save the datasets '''
 print("Train dataset : ", X_train.shape, y_train.shape)

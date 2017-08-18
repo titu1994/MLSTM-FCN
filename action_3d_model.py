@@ -16,7 +16,7 @@ TRAINABLE = True
 
 
 def generate_model():
-    ip = Input(shape=(MAX_TIMESTEPS, MAX_NB_VARIABLES))
+    ip = Input(shape=(MAX_NB_VARIABLES, MAX_TIMESTEPS))
 
     x = Permute((2, 1))(ip)
     x = Masking()(x)
@@ -51,7 +51,7 @@ def generate_model():
 
 
 def generate_model_2():
-    ip = Input(shape=(MAX_TIMESTEPS, MAX_NB_VARIABLES))
+    ip = Input(shape=(MAX_NB_VARIABLES, MAX_TIMESTEPS))
 
     x = Permute((2, 1))(ip)
     x = Masking()(x)

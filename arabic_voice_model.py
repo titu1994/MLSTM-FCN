@@ -19,7 +19,7 @@ regularization_weight = 5e-4
 
 
 def generate_model():
-    ip = Input(shape=(MAX_TIMESTEPS, MAX_NB_VARIABLES))
+    ip = Input(shape=(MAX_NB_VARIABLES, MAX_TIMESTEPS))
 
     x = Masking()(ip)
     x = LSTM(128, unroll=True,
@@ -57,7 +57,7 @@ def generate_model():
 
 
 def generate_model_2():
-    ip = Input(shape=(MAX_TIMESTEPS, MAX_NB_VARIABLES))
+    ip = Input(shape=(MAX_NB_VARIABLES, MAX_TIMESTEPS))
 
     x = Masking()(ip)
     x = AttentionLSTM(128, unroll=True, kernel_regularizer=l2(regularization_weight),
@@ -97,6 +97,6 @@ def generate_model_2():
 if __name__ == "__main__":
     model = generate_model_2()
 
-    train_model(model, DATASET_INDEX, dataset_prefix='arabic_voice', epochs=600, batch_size=128)
+    #train_model(model, DATASET_INDEX, dataset_prefix='arabic_voice', epochs=600, batch_size=128)
 
     evaluate_model(model, DATASET_INDEX, dataset_prefix='arabic_voice', batch_size=128)

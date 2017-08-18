@@ -15,7 +15,7 @@ TEST_FILES = ['../data/arabic/', # 0
               '../data/arabic_voice/', # 5
               ]
 
-MAX_TIMESTEPS_LIST = [13, # 0
+MAX_NB_VARIABLES = [13, # 0
                       136, # 1
                       30, # 2
                       570, # 3
@@ -23,7 +23,7 @@ MAX_TIMESTEPS_LIST = [13, # 0
                       39, # 5
                       ]
 
-MAX_NB_VARIABLES = [93,  # 0
+MAX_TIMESTEPS_LIST = [93,  # 0
                     71,  # 1
                     173,  # 2
                     100, # 3

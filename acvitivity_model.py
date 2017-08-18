@@ -16,14 +16,14 @@ TRAINABLE = True
 
 
 def generate_model():
-    ip = Input(shape=(MAX_TIMESTEPS, MAX_NB_VARIABLES))
+    ip = Input(shape=(MAX_NB_VARIABLES, MAX_TIMESTEPS))
 
     x = Permute((2, 1))(ip)
     x = Masking()(x)
     x = LSTM(384)(x)
     x = Dropout(0.8)(x)
 
-    #y = Permute((2, 1))(ip)
+    # y = Permute((2, 1))(ip)
     y = Conv1D(128, 8, padding='same', kernel_initializer='he_uniform')(ip)
     y = BatchNormalization()(y)
     y = Activation('relu')(y)
@@ -51,13 +51,14 @@ def generate_model():
 
 
 def generate_model_2():
-    ip = Input(shape=(MAX_TIMESTEPS, MAX_NB_VARIABLES))
+    ip = Input(shape=(MAX_NB_VARIABLES, MAX_TIMESTEPS))
 
     x = Permute((2, 1))(ip)
     x = Masking()(x)
     x = AttentionLSTM(128, unroll=True)(x)
     x = Dropout(0.8)(x)
 
+    #y = Permute((2, 1))(ip)
     y = Conv1D(128, 8, padding='same', kernel_initializer='he_uniform')(ip)
     y = BatchNormalization()(y)
     y = Activation('relu')(y)

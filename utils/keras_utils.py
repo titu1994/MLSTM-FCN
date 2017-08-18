@@ -107,11 +107,11 @@ def train_model(model:Model, dataset_id, dataset_prefix, dataset_fold_id=None, e
     X_train, y_train, X_test, y_test, is_timeseries = load_dataset_at(dataset_id,
                                                                       fold_index=dataset_fold_id,
                                                                       normalize_timeseries=normalize_timeseries)
-    max_timesteps, sequence_length = calculate_dataset_metrics(X_train)
+    max_timesteps, max_nb_variables = calculate_dataset_metrics(X_train)
 
-    if sequence_length != MAX_NB_VARIABLES[dataset_id]:
+    if max_nb_variables != MAX_NB_VARIABLES[dataset_id]:
         if cutoff is None:
-            choice = cutoff_choice(dataset_id, sequence_length)
+            choice = cutoff_choice(dataset_id, max_nb_variables)
         else:
             assert cutoff in ['pre', 'post'], 'Cutoff parameter value must be either "pre" or "post"'
             choice = cutoff
@@ -119,7 +119,7 @@ def train_model(model:Model, dataset_id, dataset_prefix, dataset_fold_id=None, e
         if choice not in ['pre', 'post']:
             return
         else:
-            X_train, X_test = cutoff_sequence(X_train, X_test, choice, dataset_id, sequence_length)
+            X_train, X_test = cutoff_sequence(X_train, X_test, choice, dataset_id, max_nb_variables)
 
     classes = np.unique(y_train)
     le = LabelEncoder()
@@ -167,11 +167,11 @@ def evaluate_model(model:Model, dataset_id, dataset_prefix, dataset_fold_id=None
     _, _, X_test, y_test, is_timeseries = load_dataset_at(dataset_id,
                                                           fold_index=dataset_fold_id,
                                                           normalize_timeseries=normalize_timeseries)
-    max_timesteps, sequence_length = calculate_dataset_metrics(X_test)
+    max_timesteps, max_nb_variables = calculate_dataset_metrics(X_test)
 
-    if sequence_length != MAX_NB_VARIABLES[dataset_id]:
+    if max_nb_variables != MAX_NB_VARIABLES[dataset_id]:
         if cutoff is None:
-            choice = cutoff_choice(dataset_id, sequence_length)
+            choice = cutoff_choice(dataset_id, max_nb_variables)
         else:
             assert cutoff in ['pre', 'post'], 'Cutoff parameter value must be either "pre" or "post"'
             choice = cutoff
@@ -179,7 +179,7 @@ def evaluate_model(model:Model, dataset_id, dataset_prefix, dataset_fold_id=None
         if choice not in ['pre', 'post']:
             return
         else:
-            _, X_test = cutoff_sequence(None, X_test, choice, dataset_id, sequence_length)
+            _, X_test = cutoff_sequence(None, X_test, choice, dataset_id, max_nb_variables)
 
     if not is_timeseries:
         X_test = pad_sequences(X_test, maxlen=MAX_NB_VARIABLES[dataset_id], padding='post', truncating='post')

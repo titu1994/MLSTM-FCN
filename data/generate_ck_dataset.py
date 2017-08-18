@@ -39,18 +39,18 @@ for k in range(10):
             var_list.append(var_count)
 
         var_list = np.array(var_list)
-        max_nb_variables = var_list.max()
-        min_nb_variables = var_list.min()
-        median_nb_variables = np.median(var_list)
+        max_nb_timesteps = var_list.max()
+        min_nb_timesteps = var_list.min()
+        median_nb_timesteps = np.median(var_list)
 
-        print('max nb variables train : ', max_nb_variables)
-        print('min nb variables train : ', min_nb_variables)
-        print('median nb variables train : ', median_nb_variables)
+        print('max nb timesteps train : ', max_nb_timesteps)
+        print('min nb timesteps train : ', min_nb_timesteps)
+        print('median nb timesteps train : ', median_nb_timesteps)
 
         print('-' * 80)
         print()
 
-    X_train = np.zeros((X.shape[0], X[0].shape[0], max_number_variables))
+    X_train = np.zeros((X.shape[0], X[0].shape[0], max_nb_timesteps))
     y_train = y
 
     # pad ending with zeros to get numpy arrays
@@ -62,7 +62,7 @@ for k in range(10):
     X = DATA['new_X'][0, (np.array(testind) - 1)]  ####Test Data
     y = DATA['new_labels'][0, (np.array(testind) - 1)]  ####Test Labels
 
-    X_test = np.zeros((X.shape[0], X[0].shape[0], max_number_variables))
+    X_test = np.zeros((X.shape[0], X[0].shape[0], max_nb_timesteps))
     y_test = y
 
     # pad ending with zeros to get numpy arrays

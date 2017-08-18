@@ -71,10 +71,10 @@ def load_dataset_at(index, fold_index=None, normalize_timeseries=False, verbose=
 
 
 def calculate_dataset_metrics(X_train):
-    max_sequence_length = X_train.shape[-1]
-    max_timesteps = X_train.shape[1]
+    max_nb_variables = X_train.shape[1]
+    max_timesteps = X_train.shape[-1]
 
-    return max_timesteps, max_sequence_length
+    return max_timesteps, max_nb_variables
 
 
 def cutoff_choice(dataset_id, sequence_length):

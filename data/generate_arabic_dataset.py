@@ -16,16 +16,16 @@ for i in range(X.shape[0]):
     var_list.append(var_count)
 
 var_list = np.array(var_list)
-max_nb_variables = var_list.max()
-min_nb_variables = var_list.min()
-median_nb_variables = np.median(var_list)
+max_nb_timesteps = var_list.max()
+min_nb_timesteps = var_list.min()
+median_nb_timesteps = np.median(var_list)
 
-print('max nb variables train : ', max_nb_variables)
-print('min nb variables train : ', min_nb_variables)
-print('median nb variables train : ', median_nb_variables)
+print('max nb timesteps train : ', max_nb_timesteps)
+print('min nb timesteps train : ', min_nb_timesteps)
+print('median nb timesteps train : ', median_nb_timesteps)
 
 
-X_train = np.zeros((X.shape[0], X[0].shape[0], max_nb_variables))
+X_train = np.zeros((X.shape[0], X[0].shape[0], max_nb_timesteps))
 y_train = y[0]
 
 # pad ending with zeros to get numpy arrays
@@ -41,7 +41,7 @@ y = arabic_test_dict['test_labels']
 X = X[0]
 y = y[0]
 
-X_test = np.zeros((X.shape[0], X[0].shape[0], max_nb_variables))
+X_test = np.zeros((X.shape[0], X[0].shape[0], max_nb_timesteps))
 y_test = y
 
 # pad ending with zeros to get numpy arrays
