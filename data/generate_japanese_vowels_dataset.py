@@ -48,6 +48,10 @@ for i in range(len(train_arrays)):
 
 with open(train_speaker_rows_path, 'r') as f:
     lengths = f.readline().split(' ')
+    try:
+        test = int(lengths[-1])
+    except ValueError:
+        lengths = lengths[:-1]
     lengths = np.array(lengths, dtype='int')
 
     index = 0
@@ -61,7 +65,7 @@ with open(train_speaker_rows_path, 'r') as f:
 ''' TEST '''
 
 test_arrays = []
-with open(train_data_path, 'r') as f:
+with open(test_data_path, 'r') as f:
     array_buffer = []
 
     for line in f:
@@ -72,8 +76,6 @@ with open(train_data_path, 'r') as f:
             array = np.array(line.split(' ')[:-1], dtype='float32')
             array_buffer.append(array)
 
-nb_variables = len(test_arrays[0][0])
-
 X_test = np.zeros((len(test_arrays), nb_variables, max_train_length))
 y_test = np.zeros((len(test_arrays),))
 
@@ -81,10 +83,14 @@ for i in range(len(test_arrays)):
     x = np.asarray(test_arrays[i])
     x = x.transpose((1, 0))
     max_len = x.shape[-1]
-    X_test[i, :, :max_len] = x
+    X_test[i, :, :max_len] = x[:, :max_train_length]
 
-with open(train_speaker_rows_path, 'r') as f:
+with open(test_speaker_rows_path, 'r') as f:
     lengths = f.readline().split(' ')
+    try:
+        test = int(lengths[-1])
+    except ValueError:
+        lengths = lengths[:-1]
     lengths = np.array(lengths, dtype='int')
 
     index = 0
