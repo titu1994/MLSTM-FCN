@@ -29,6 +29,14 @@ train_array_lengths = np.asarray(train_array_lengths)
 max_train_length = train_array_lengths.max()
 nb_variables = len(train_arrays[0][0])
 
+max_nb_timesteps = train_array_lengths.max()
+min_nb_timesteps = train_array_lengths.min()
+median_nb_timesteps = np.median(train_array_lengths)
+
+print('max nb timesteps train : ', max_nb_timesteps)
+print('min nb timesteps train : ', min_nb_timesteps)
+print('median nb timesteps train : ', median_nb_timesteps)
+
 X_train = np.zeros((len(train_arrays), nb_variables, max_train_length))
 y_train = np.zeros((len(train_arrays),))
 
@@ -45,7 +53,7 @@ with open(train_speaker_rows_path, 'r') as f:
     index = 0
     label = 0
     for length in lengths:
-        for l in range(length):
+        for _ in range(length):
             y_train[index] = label
             index += 1
         label += 1
@@ -64,12 +72,6 @@ with open(train_data_path, 'r') as f:
             array = np.array(line.split(' ')[:-1], dtype='float32')
             array_buffer.append(array)
 
-train_array_lengths = []
-for i in range(len(test_arrays)):
-    train_array_lengths.append(len(test_arrays[i]))
-
-train_array_lengths = np.asarray(train_array_lengths)
-max_train_length = train_array_lengths.max()
 nb_variables = len(test_arrays[0][0])
 
 X_test = np.zeros((len(test_arrays), nb_variables, max_train_length))
@@ -88,7 +90,7 @@ with open(train_speaker_rows_path, 'r') as f:
     index = 0
     label = 0
     for length in lengths:
-        for l in range(length):
+        for _ in range(length):
             y_test[index] = label
             index += 1
         label += 1
