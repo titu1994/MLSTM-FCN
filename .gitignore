@@ -3,6 +3,7 @@ data/*/*.mat
 data/*/*.npy
 data/*/*.train
 data/*/*.test
+data/*/*.xlsx
 data/CCVdataset/*.txt
 !data/note.txt
 !data/model_dt.csv
