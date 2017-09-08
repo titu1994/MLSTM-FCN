@@ -1,7 +1,7 @@
 import numpy as np
 from sklearn.model_selection import KFold
 
-japanese_vowels_path = '../data/JapaneseVowels/'
+japanese_vowels_path = ''
 train_data_path = japanese_vowels_path + 'ae.train'
 test_data_path = japanese_vowels_path + 'ae.test'
 train_speaker_rows_path = japanese_vowels_path + 'size_ae.train'

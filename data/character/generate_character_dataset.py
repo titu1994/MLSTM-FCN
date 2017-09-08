@@ -2,7 +2,7 @@ import scipy.io as sio
 
 import numpy as np
 
-ck_path = r'../data/character/'
+ck_path = r''
 DATA = sio.loadmat(ck_path + 'randomperm_character_overlap.mat')
 
 var_list = None
