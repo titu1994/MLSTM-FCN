@@ -58,7 +58,7 @@ def generate_model_2():
     stride = 2
 
     x = Permute((2, 1))(ip)
-    x = Conv1D(MAX_NB_VARIABLES // stride, 8, strides=stride, padding='same', activation='linear', use_bias=False,
+    x = Conv1D(MAX_NB_VARIABLES // stride, 8, strides=stride, padding='same', activation='relu', use_bias=False,
                kernel_initializer='he_uniform')(x) # (None, variables / stride, timesteps)
     x = Permute((2, 1))(x)
 
