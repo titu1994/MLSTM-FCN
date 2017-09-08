@@ -54,8 +54,15 @@ def generate_model():
 def generate_model_2():
     ip = Input(shape=(MAX_NB_VARIABLES, MAX_TIMESTEPS))
 
-    #x = Permute((2, 1))(ip)
-    x = Masking()(ip)
+    ''' sabsample timesteps to prevent OOM due to Attention LSTM '''
+    stride = 2
+
+    x = Permute((2, 1))(ip)
+    x = Conv1D(MAX_NB_VARIABLES // stride, 8, strides=stride, padding='same', activation='linear', use_bias=False,
+               kernel_initializer='he_uniform')(x) # (None, variables / 2, timesteps)
+    x = Permute((2, 1))(x)
+
+    x = Masking()(x)
     x = AttentionLSTM(128)(x)
     x = Dropout(0.8)(x)
 
@@ -107,7 +114,7 @@ def squeeze_excite_block(input):
 
 
 if __name__ == "__main__":
-    model = generate_model()
+    model = generate_model_2()
 
     train_model(model, DATASET_INDEX, dataset_prefix='action_3d', epochs=600, batch_size=128)
 
