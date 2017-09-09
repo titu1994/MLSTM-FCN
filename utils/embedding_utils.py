@@ -112,7 +112,7 @@ def prepare_tokenized_data(texts, max_nb_words, max_sequence_length, ngram_range
     max_features = np.max(list(indice_token.keys())) + 1
     print('Now there are:', max_features, 'features')
 
-    # Augmenting X_train and X_test with n-grams features
+    # Augmenting X_train and X_test_mat with n-grams features
     sequences = add_ngram(sequences, token_indice, ngram_range)
     print('Average sequence length: {}'.format(np.mean(list(map(len, sequences)), dtype=int)))
     print('Max sequence length: {}'.format(np.max(list(map(len, sequences)))))

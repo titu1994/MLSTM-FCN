@@ -57,7 +57,7 @@ for i in range(X_train.shape[0]):
 X_train_mean = X_train.mean()
 X_train_std = X_train.std()
 print("Train Mean +- std : ", X_train_mean, X_train_std)
-#X_train = (X_train - X_train_mean) / (X_train_std + 1e-8)
+#X_train_mat = (X_train_mat - X_train_mean) / (X_train_std + 1e-8)
 
 ''' Load test set '''
 
@@ -71,7 +71,7 @@ for i in range(X_test.shape[0]):
     var_count = X[i].shape[-1]
     X_test[i, :, :var_count] = X[i]
 
-#X_test = (X_test - X_train_mean) / (X_train_std + 1e-8)
+#X_test_mat = (X_test_mat - X_train_mean) / (X_train_std + 1e-8)
 
 ''' Save the datasets '''
 print("Train dataset : ", X_train.shape, y_train.shape)
@@ -80,9 +80,9 @@ print("Train dataset metrics : ", X_train.mean(), X_train.std())
 print("Test dataset : ", X_test.mean(), X_test.std())
 print("Nb classes : ", len(np.unique(y_train)))
 
-np.save(arabic_path + 'X_train.npy', X_train)
-np.save(arabic_path + 'y_train.npy', y_train)
-np.save(arabic_path + 'X_test.npy', X_test)
-np.save(arabic_path + 'y_test.npy', y_test)
+np.save(arabic_path + 'X_train_mat.npy', X_train)
+np.save(arabic_path + 'y_train_mat.npy', y_train)
+np.save(arabic_path + 'X_test_mat.npy', X_test)
+np.save(arabic_path + 'y_test_mat.npy', y_test)
 
 

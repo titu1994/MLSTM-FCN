@@ -6,6 +6,10 @@ TRAIN_FILES = ['../data/arabic/', # 0
                '../data/Activity/', # 4
                '../data/arabic_voice/', # 5
                '../data/JapaneseVowels/', # 6
+
+               # New benchmark datasets
+               '../data/AREM/', # 7
+               '../data/gesture_phase/', # 8
                ]
 
 TEST_FILES = ['../data/arabic/', # 0
@@ -15,6 +19,10 @@ TEST_FILES = ['../data/arabic/', # 0
               '../data/Activity/', # 4
               '../data/arabic_voice/', # 5
               '../data/JapaneseVowels/', # 6
+
+              # New benchmark datasets
+              '../data/AREM/', # 7
+              '../data/gesture_phase/', # 8
               ]
 
 MAX_NB_VARIABLES = [13, # 0
@@ -24,6 +32,8 @@ MAX_NB_VARIABLES = [13, # 0
                     570, # 4
                     39, # 5
                     12, # 6
+                    7, # 7
+                    18, # 8
                     ]
 
 MAX_TIMESTEPS_LIST = [93,  # 0
@@ -33,6 +43,8 @@ MAX_TIMESTEPS_LIST = [93,  # 0
                       337, # 4
                       91, # 5
                       26, # 6
+                      480, # 7
+                      180, # 8
                       ]
 
 
@@ -43,4 +55,6 @@ NB_CLASSES_LIST = [10, # 0
                    16, # 4
                    88, # 5
                    9, # 6
+                   7, # 7
+                   5, # 8
                    ]
