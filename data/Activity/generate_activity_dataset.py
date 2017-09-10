@@ -46,7 +46,7 @@ median_nb_timesteps = np.median(var_list)
 
 print('max nb timesteps train : ', max_nb_timesteps)
 print('min nb timesteps train : ', min_nb_timesteps)
-print('median nb timesteps train : ', median_nb_timesteps)
+print('median_nb_timesteps nb timesteps train : ', median_nb_timesteps)
 
 
 X_train = np.zeros((X.shape[0], X[0].shape[0], max_nb_timesteps))

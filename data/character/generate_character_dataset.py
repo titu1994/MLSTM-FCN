@@ -45,7 +45,7 @@ for k in range(10):
 
         print('max nb timesteps train : ', max_nb_timesteps)
         print('min nb timesteps train : ', min_nb_timesteps)
-        print('median nb timesteps train : ', median_nb_timesteps)
+        print('median_nb_timesteps nb timesteps train : ', median_nb_timesteps)
 
         print('-' * 80)
         print()

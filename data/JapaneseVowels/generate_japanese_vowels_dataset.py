@@ -35,7 +35,7 @@ median_nb_timesteps = np.median(train_array_lengths)
 
 print('max nb timesteps train : ', max_nb_timesteps)
 print('min nb timesteps train : ', min_nb_timesteps)
-print('median nb timesteps train : ', median_nb_timesteps)
+print('median_nb_timesteps nb timesteps train : ', median_nb_timesteps)
 
 X_train = np.zeros((len(train_arrays), nb_variables, max_train_length))
 y_train = np.zeros((len(train_arrays),))

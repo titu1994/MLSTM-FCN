@@ -25,29 +25,45 @@ for i in range(X_train_mat.shape[0]):
 var_list = np.array(var_list)
 max_nb_timesteps = var_list.max()
 min_nb_timesteps = var_list.min()
-median_nb_timesteps = np.median(var_list)
+median_nb_timesteps = int(np.median(var_list))
 
 print('max nb timesteps train : ', max_nb_timesteps)
 print('min nb timesteps train : ', min_nb_timesteps)
 print('median nb timesteps train : ', median_nb_timesteps)
 
-X_train = np.zeros((X_train_mat.shape[0], X_train_mat[0].shape[0], max_nb_timesteps))
+''' 
+We use the min_nb_timesteps in this dataset as our number of variables,
+since the maximum is nearly 15000 timesteps and cannot be trained due to
+GPU memory constraints.
+
+However, comparison of models on this dataset should be against either
+full (max_nb_timesteps) or limited (min_nb_timesteps). 
+
+Baseline provided for limited (min_nb_timesteps) data only.
+'''
+X_train = np.zeros((X_train_mat.shape[0], X_train_mat[0].shape[0], min_nb_timesteps))
 
 # pad ending with zeros to get numpy arrays
 for i in range(X_train_mat.shape[0]):
     var_count = X_train_mat[i].shape[-1]
-    #print(i, X_train_mat[i])
-    X_train[i, :, :var_count] = X_train_mat[i]
+    var_count = min(var_count, min_nb_timesteps)
+    X_train[i, :, :var_count] = X_train_mat[i][:, :min_nb_timesteps]
 
 # ''' Load test set '''
 
-X_test = np.zeros((X_test_mat.shape[0], X_test_mat[0].shape[0], max_nb_timesteps))
+X_test = np.zeros((X_test_mat.shape[0], X_test_mat[0].shape[0], min_nb_timesteps))
 
 # pad ending with zeros to get numpy arrays
 for i in range(X_test_mat.shape[0]):
     var_count = X_test_mat[i].shape[-1]
-    print(i, X_test_mat[i].shape)
-    X_test[i, :, :var_count] = X_test_mat[i]
+
+    # skip empty tuples
+    if var_count == 0:
+        continue
+
+    var_count = min(var_count, min_nb_timesteps)
+    X_test[i, :, :var_count] = X_test_mat[i][:, :min_nb_timesteps]
+
 
 # ''' Save the datasets '''
 print("Train dataset : ", X_train.shape, y_train.shape)
