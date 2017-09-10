@@ -6,7 +6,7 @@ from utils.constants import MAX_NB_VARIABLES, NB_CLASSES_LIST, MAX_TIMESTEPS_LIS
 from utils.keras_utils import train_model, evaluate_model, set_trainable
 from utils.layer_utils import AttentionLSTM
 
-DATASET_INDEX = 8
+DATASET_INDEX = 9
 
 MAX_TIMESTEPS = MAX_TIMESTEPS_LIST[DATASET_INDEX]
 MAX_NB_VARIABLES = MAX_NB_VARIABLES[DATASET_INDEX]
@@ -19,7 +19,7 @@ def generate_model():
     ip = Input(shape=(MAX_NB_VARIABLES, MAX_TIMESTEPS))
 
     x = Masking()(ip)
-    x = LSTM(8)(x)
+    x = LSTM(256)(x)
     x = Dropout(0.8)(x)
 
     y = Permute((2, 1))(ip)
@@ -55,7 +55,7 @@ def generate_model_2():
     ip = Input(shape=(MAX_NB_VARIABLES, MAX_TIMESTEPS))
 
     x = Masking()(ip)
-    x = AttentionLSTM(8)(x)
+    x = AttentionLSTM(256)(x)
     x = Dropout(0.8)(x)
 
     y = Permute((2, 1))(ip)
@@ -106,8 +106,8 @@ def squeeze_excite_block(input):
 
 
 if __name__ == "__main__":
-    model = generate_model()
+    model = generate_model_2()
 
-    train_model(model, DATASET_INDEX, dataset_prefix='gesture_phase', epochs=1000, batch_size=128)
+    # train_model(model, DATASET_INDEX, dataset_prefix='ht_sensor', epochs=600, batch_size=128)
 
-    evaluate_model(model, DATASET_INDEX, dataset_prefix='gesture_phase', batch_size=128)
+    evaluate_model(model, DATASET_INDEX, dataset_prefix='ht_sensor', batch_size=128)
