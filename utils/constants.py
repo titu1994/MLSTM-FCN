@@ -11,6 +11,9 @@ TRAIN_FILES = ['../data/arabic/', # 0
                '../data/AREM/', # 7
                '../data/gesture_phase/', # 8
                '../data/HT_Sensor/', # 9
+               '../data/MovementAAL/', # 10
+               '../data/HAR/', # 11
+               '../data/occupancy_detect/', # 12
                ]
 
 TEST_FILES = ['../data/arabic/', # 0
@@ -25,6 +28,9 @@ TEST_FILES = ['../data/arabic/', # 0
               '../data/AREM/', # 7
               '../data/gesture_phase/', # 8
               '../data/HT_Sensor/',  # 9
+              '../data/MovementAAL/',  # 10
+              '../data/HAR/',  # 11
+              '../data/occupancy_detect/',  # 12
               ]
 
 MAX_NB_VARIABLES = [13, # 0
@@ -39,6 +45,9 @@ MAX_NB_VARIABLES = [13, # 0
                     7, # 7
                     18, # 8
                     11, # 9
+                    4, # 10
+                    9, # 11
+                    5, # 12
                     ]
 
 MAX_TIMESTEPS_LIST = [93,  # 0
@@ -53,6 +62,9 @@ MAX_TIMESTEPS_LIST = [93,  # 0
                       480, # 7
                       214, # 8
                       5396, # 9
+                      119, # 10
+                      128, # 11
+                      3758, # 12
                       ]
 
 
@@ -68,4 +80,7 @@ NB_CLASSES_LIST = [10, # 0
                    7, # 7
                    5, # 8
                    3, # 9
+                   2, # 10
+                   6, # 11
+                   2, # 12
                    ]
