@@ -14,6 +14,8 @@ TRAIN_FILES = ['../data/arabic/', # 0
                '../data/MovementAAL/', # 10
                '../data/HAR/', # 11
                '../data/occupancy_detect/', # 12
+               '../data/eeg/',  # 13
+               '../data/ozone/', # 14
                ]
 
 TEST_FILES = ['../data/arabic/', # 0
@@ -31,6 +33,8 @@ TEST_FILES = ['../data/arabic/', # 0
               '../data/MovementAAL/',  # 10
               '../data/HAR/',  # 11
               '../data/occupancy_detect/',  # 12
+              '../data/eeg/', # 13
+              '../data/ozone/',  # 14
               ]
 
 MAX_NB_VARIABLES = [13, # 0
@@ -48,6 +52,8 @@ MAX_NB_VARIABLES = [13, # 0
                     4, # 10
                     9, # 11
                     5, # 12
+                    13, # 13
+                    72, # 14
                     ]
 
 MAX_TIMESTEPS_LIST = [93,  # 0
@@ -65,6 +71,8 @@ MAX_TIMESTEPS_LIST = [93,  # 0
                       119, # 10
                       128, # 11
                       3758, # 12
+                      117, # 13
+                      291, # 14
                       ]
 
 
@@ -83,4 +91,6 @@ NB_CLASSES_LIST = [10, # 0
                    2, # 10
                    6, # 11
                    2, # 12
+                   2, # 13
+                   2, # 14
                    ]
