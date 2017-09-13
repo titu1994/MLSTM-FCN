@@ -45,13 +45,6 @@ for i in range(X_test_mat.shape[0]):
     var_count = X_test_mat[i].shape[-1]
     X_test[i, :, :var_count] = X_test_mat[i][:, :max_nb_timesteps]
 
-# Normalize the data
-train_mean = X_train.mean()
-train_std = X_train.std()
-
-X_train = (X_train - train_mean) / (train_std + 1e-8)
-X_test = (X_test - train_mean) / (train_std + 1e-8)
-
 # ''' Save the datasets '''
 print("Train dataset : ", X_train.shape, y_train.shape)
 print("Test dataset : ", X_test.shape, y_test.shape)
