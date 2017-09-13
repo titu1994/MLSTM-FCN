@@ -57,7 +57,7 @@ def generate_model_2():
 
     #x = Permute((2, 1))(ip)
     x = Masking()(ip)
-    x = AttentionLSTM(128, unroll=True)(x)
+    x = AttentionLSTM(384, unroll=True)(x)
     x = Dropout(0.8)(x)
 
     y = Permute((2, 1))(ip)
@@ -108,7 +108,7 @@ def squeeze_excite_block(input):
 
 
 if __name__ == "__main__":
-    model = generate_model()
+    model = generate_model_2()
 
     train_model(model, DATASET_INDEX, dataset_prefix='activity', epochs=1000, batch_size=128)
 

@@ -122,7 +122,7 @@ if __name__ == "__main__":
         print()
 
         model = generate_model() # change to generate_model_2()
-        train_model(model, DATASET_INDEX, dataset_prefix='ck', dataset_fold_id=(i + 1), epochs=600, batch_size=128)
+        #train_model(model, DATASET_INDEX, dataset_prefix='ck', dataset_fold_id=(i + 1), epochs=600, batch_size=128)
         score = evaluate_model(model, DATASET_INDEX, dataset_prefix='ck', dataset_fold_id=(i + 1), batch_size=128)
         scores.append(score)
 
