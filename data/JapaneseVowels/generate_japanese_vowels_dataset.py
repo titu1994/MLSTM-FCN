@@ -115,3 +115,8 @@ np.save(japanese_vowels_path + 'X_train_mat.npy', X_train)
 np.save(japanese_vowels_path + 'y_train_mat.npy', y_train)
 np.save(japanese_vowels_path + 'X_test_mat.npy', X_test) # full test dataset
 np.save(japanese_vowels_path + 'y_test_mat.npy', y_test) # full test dataset
+
+np.save(japanese_vowels_path + 'X_train.npy', X_train)
+np.save(japanese_vowels_path + 'y_train.npy', y_train)
+np.save(japanese_vowels_path + 'X_test.npy', X_test) # full test dataset
+np.save(japanese_vowels_path + 'y_test.npy', y_test) # full test dataset

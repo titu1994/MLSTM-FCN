@@ -1,21 +1,18 @@
 from keras.models import Model
 from keras.layers import Input, Dense, LSTM, multiply, concatenate, Activation, Masking, Reshape
 from keras.layers import Conv1D, BatchNormalization, GlobalAveragePooling1D, Permute, Dropout
-from keras.regularizers import l2
 
 from utils.constants import MAX_NB_VARIABLES, NB_CLASSES_LIST, MAX_TIMESTEPS_LIST
 from utils.keras_utils import train_model, evaluate_model, set_trainable
 from utils.layer_utils import AttentionLSTM
 
-DATASET_INDEX = 5
+DATASET_INDEX = 33
 
 MAX_TIMESTEPS = MAX_TIMESTEPS_LIST[DATASET_INDEX]
 MAX_NB_VARIABLES = MAX_NB_VARIABLES[DATASET_INDEX]
 NB_CLASS = NB_CLASSES_LIST[DATASET_INDEX]
 
 TRAINABLE = True
-
-regularization_weight = 5e-4
 
 
 def generate_model():
@@ -196,6 +193,6 @@ def squeeze_excite_block(input):
 if __name__ == "__main__":
     model = generate_model_2()
 
-    # train_model(model, DATASET_INDEX, dataset_prefix='arabic_voice', epochs=600, batch_size=128)
+    # train_model(model, DATASET_INDEX, dataset_prefix='kick_vs_punch_', epochs=1000, batch_size=128)
 
-    evaluate_model(model, DATASET_INDEX, dataset_prefix='arabic_voice', batch_size=128)
+    evaluate_model(model, DATASET_INDEX, dataset_prefix='kick_vs_punch_', batch_size=128)

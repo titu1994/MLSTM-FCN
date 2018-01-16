@@ -103,7 +103,7 @@ def _average_gradient_norm(model, X_train, y_train, batch_size):
 
 
 def train_model(model:Model, dataset_id, dataset_prefix, dataset_fold_id=None, epochs=50, batch_size=128, val_subset=None,
-                cutoff=None, normalize_timeseries=False, learning_rate=1e-3, compile_model=True):
+                cutoff=None, normalize_timeseries=False, learning_rate=1e-3, monitor='val_acc', optimization_mode='max', compile_model=True):
     X_train, y_train, X_test, y_test, is_timeseries = load_dataset_at(dataset_id,
                                                                       fold_index=dataset_fold_id,
                                                                       normalize_timeseries=normalize_timeseries)
@@ -143,9 +143,9 @@ def train_model(model:Model, dataset_id, dataset_prefix, dataset_fold_id=None, e
     else:
         weight_fn = "./weights/%s_fold_%d_weights.h5" % (dataset_prefix, dataset_fold_id)
 
-    model_checkpoint = ModelCheckpoint(weight_fn, verbose=1,
-                                       monitor='val_acc', save_best_only=True, save_weights_only=True)
-    reduce_lr = ReduceLROnPlateau(monitor='val_acc', patience=100, mode='max',
+    model_checkpoint = ModelCheckpoint(weight_fn, verbose=1, mode=optimization_mode,
+                                       monitor=monitor, save_best_only=True, save_weights_only=True)
+    reduce_lr = ReduceLROnPlateau(monitor=monitor, patience=100, mode=optimization_mode,
                                   factor=factor, cooldown=0, min_lr=1e-4, verbose=2)
     callback_list = [model_checkpoint, reduce_lr]
 
@@ -203,7 +203,7 @@ def evaluate_model(model:Model, dataset_id, dataset_prefix, dataset_fold_id=None
     print()
     print("Final Accuracy : ", accuracy)
 
-    return accuracy
+    return accuracy, loss
 
 def set_trainable(layer, value):
    layer.trainable = value
@@ -251,5 +251,38 @@ class MaskablePermute(Permute):
     def __init__(self, dims, **kwargs):
         super(MaskablePermute, self).__init__(dims, **kwargs)
         self.supports_masking = True
+
+
+def f1_score(y_true, y_pred):
+    def recall(y_true, y_pred):
+        """Recall metric.
+
+        Only computes a batch-wise average of recall.
+
+        Computes the recall, a metric for multi-label classification of
+        how many relevant items are selected.
+        """
+        true_positives = K.sum(K.round(K.clip(y_true * y_pred, 0, 1)))
+        possible_positives = K.sum(K.round(K.clip(y_true, 0, 1)))
+        recall = true_positives / (possible_positives + K.epsilon())
+        return recall
+
+    def precision(y_true, y_pred):
+        """Precision metric.
+
+        Only computes a batch-wise average of precision.
+
+        Computes the precision, a metric for multi-label classification of
+        how many selected items are relevant.
+        """
+        true_positives = K.sum(K.round(K.clip(y_true * y_pred, 0, 1)))
+        predicted_positives = K.sum(K.round(K.clip(y_pred, 0, 1)))
+        precision = true_positives / (predicted_positives + K.epsilon())
+        return precision
+
+    precision = precision(y_true, y_pred)
+    recall = recall(y_true, y_pred)
+
+    return 2 * ((precision * recall) / (precision + recall))
 
 

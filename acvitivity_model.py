@@ -18,9 +18,8 @@ TRAINABLE = True
 def generate_model():
     ip = Input(shape=(MAX_NB_VARIABLES, MAX_TIMESTEPS))
 
-    #x = Permute((2, 1))(ip)
     x = Masking()(ip)
-    x = LSTM(384)(x)
+    x = LSTM(8)(x)
     x = Dropout(0.8)(x)
 
     y = Permute((2, 1))(ip)
@@ -58,8 +57,9 @@ def generate_model_2():
     ''' sabsample timesteps to prevent OOM due to Attention LSTM '''
     stride = 3
 
+    x = Permute((2, 1))(ip)
     x = Conv1D(MAX_NB_VARIABLES // stride, 8, strides=stride, padding='same', activation='relu', use_bias=False,
-               kernel_initializer='he_uniform')(ip)  # (None, variables / stride, timesteps)
+               kernel_initializer='he_uniform')(x) # (None, variables / stride, timesteps)
 
     x = Masking()(x)
     x = AttentionLSTM(384, unroll=True)(x)
@@ -93,6 +93,84 @@ def generate_model_2():
 
     return model
 
+def generate_model_3():
+    ip = Input(shape=(MAX_NB_VARIABLES, MAX_TIMESTEPS))
+
+    x = Masking()(ip)
+    x = LSTM(8)(x)
+    x = Dropout(0.8)(x)
+
+    y = Permute((2, 1))(ip)
+    y = Conv1D(128, 8, padding='same', kernel_initializer='he_uniform')(y)
+    y = BatchNormalization()(y)
+    y = Activation('relu')(y)
+    #y = squeeze_excite_block(y)
+
+    y = Conv1D(256, 5, padding='same', kernel_initializer='he_uniform')(y)
+    y = BatchNormalization()(y)
+    y = Activation('relu')(y)
+    #y = squeeze_excite_block(y)
+
+    y = Conv1D(128, 3, padding='same', kernel_initializer='he_uniform')(y)
+    y = BatchNormalization()(y)
+    y = Activation('relu')(y)
+
+    y = GlobalAveragePooling1D()(y)
+
+    x = concatenate([x, y])
+
+    out = Dense(NB_CLASS, activation='softmax')(x)
+
+    model = Model(ip, out)
+    model.summary()
+
+    # add load model code here to fine-tune
+
+    return model
+
+
+def generate_model_4():
+    ip = Input(shape=(MAX_NB_VARIABLES, MAX_TIMESTEPS))
+    # stride = 3
+    #
+    # x = Permute((2, 1))(ip)
+    # x = Conv1D(MAX_NB_VARIABLES // stride, 8, strides=stride, padding='same', activation='relu', use_bias=False,
+    #            kernel_initializer='he_uniform')(x)  # (None, variables / stride, timesteps)
+    # x = Permute((2, 1))(x)
+
+    x = Masking()(ip)
+    x = AttentionLSTM(8)(x)
+    x = Dropout(0.8)(x)
+
+    y = Permute((2, 1))(ip)
+    y = Conv1D(128, 8, padding='same', kernel_initializer='he_uniform')(y)
+    y = BatchNormalization()(y)
+    y = Activation('relu')(y)
+    #y = squeeze_excite_block(y)
+
+    y = Conv1D(256, 5, padding='same', kernel_initializer='he_uniform')(y)
+    y = BatchNormalization()(y)
+    y = Activation('relu')(y)
+    #y = squeeze_excite_block(y)
+
+    y = Conv1D(128, 3, padding='same', kernel_initializer='he_uniform')(y)
+    y = BatchNormalization()(y)
+    y = Activation('relu')(y)
+
+    y = GlobalAveragePooling1D()(y)
+
+    x = concatenate([x, y])
+
+    out = Dense(NB_CLASS, activation='softmax')(x)
+
+    model = Model(ip, out)
+    model.summary()
+
+    # add load model code here to fine-tune
+
+    return model
+
+
 def squeeze_excite_block(input):
     ''' Create a squeeze-excite block
     Args:
@@ -113,8 +191,8 @@ def squeeze_excite_block(input):
 
 
 if __name__ == "__main__":
-    model = generate_model()
+    model = generate_model_2()
 
-    # train_model(model, DATASET_INDEX, dataset_prefix='activity', epochs=1000, batch_size=128)
+    train_model(model, DATASET_INDEX, dataset_prefix='activity_attention', epochs=1000, batch_size=128)
 
-    evaluate_model(model, DATASET_INDEX, dataset_prefix='activity', batch_size=128)
+    evaluate_model(model, DATASET_INDEX, dataset_prefix='activity_attention', batch_size=128)
