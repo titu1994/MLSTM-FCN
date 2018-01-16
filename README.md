@@ -13,7 +13,7 @@ Keras with the Tensorflow backend has been used for the development of the model
 **Note** : The input to the Input layer of all models will be pre-shuffled to be in the shape (Batchsize, 1, Number of timesteps), and the input will be shuffled again before being applied to the CNNs (to obtain the correct shape (Batchsize, Number of timesteps, 1)). This is in contrast to the paper where the input is of the shape (Batchsize, Number of timesteps, 1) and the shuffle operation is applied before the LSTM to obtain the input shape (Batchsize, 1, Number of timesteps). These operations are equivalent.
 
 #Multivariate Benchmark Datasets
-<img src="https://github.com/titu1994/MLSTM-FCN/blob/master/images/MLSTM-FCN-benchmark1.png?raw=true" height=100% width=100%>
+<img src="https://github.com/titu1994/MLSTM-FCN/blob/master/images/MLSTM-FCN-benchmark1.jpg?raw=true" height=100% width=100%>
 
 
 # Training and Evaluation
@@ -37,8 +37,8 @@ To evaluate the performance of the model, simply execute the script with the bel
 `evaluate_model(model, DATASET_INDEX, dataset_prefix='???????', batch_size=128)`
 
 # Results
-<img src="https://github.com/titu1994/MLSTM-FCN/blob/master/images/MLSTM-FCN-scores1.png?raw=true" height=100% width=100%>
-<img src="https://github.com/titu1994/MLSTM-FCN/blob/master/images/MLSTM-FCN-scores2.png?raw=true" height=100% width=100%>
-<img src="https://github.com/titu1994/MLSTM-FCN/blob/master/images/MLSTM-FCN-scores3.png?raw=true" height=100% width=100%>
+<img src="https://github.com/titu1994/MLSTM-FCN/blob/master/images/MLSTM-FCN-scores1.jpg?raw=true" height=100% width=100%>
+<img src="https://github.com/titu1994/MLSTM-FCN/blob/master/images/MLSTM-FCN-scores2.jpg?raw=true" height=100% width=100%>
+<img src="https://github.com/titu1994/MLSTM-FCN/blob/master/images/MLSTM-FCN-scores3.jpg?raw=true" height=100% width=100%>
 
 # Citation
