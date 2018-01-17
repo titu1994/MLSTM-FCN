@@ -12,7 +12,7 @@ Keras with the Tensorflow backend has been used for the development of the model
 
 **Note** : The input to the Input layer of all models will be pre-shuffled to be in the shape (Batchsize, Number of variables, Number of timesteps), and the input will be shuffled again before being applied to the CNNs (to obtain the correct shape (Batchsize, Number of timesteps, Number of variables)). This is in contrast to the paper where the input is of the shape (Batchsize, Number of timesteps, Number of variables) and the shuffle operation is applied before the LSTM to obtain the input shape (Batchsize, Number of variables, Number of timesteps). These operations are equivalent.
 
-#Multivariate Benchmark Datasets
+# Multivariate Benchmark Datasets
 <img src="https://github.com/titu1994/MLSTM-FCN/blob/master/images/MLSTM-FCN-benchmark1.jpg?raw=true" height=100% width=100%>
 
 
@@ -44,9 +44,9 @@ To evaluate the performance of the model, simply execute the script with the bel
 # Citation
 ```
 @misc{Karim2018,
-Author = {Fazle Karim and Somshubra Majumdar and Houshang Darabi and Samuel Harford},
-Title = {Multivariate LSTM-FCNs for Time Series Classification},
-Year = {2018},
-Eprint = {arXiv:1801.04503},
+  Author = {Fazle Karim and Somshubra Majumdar and Houshang Darabi and Samuel Harford},
+  Title = {Multivariate LSTM-FCNs for Time Series Classification},
+  Year = {2018},
+  Eprint = {arXiv:1801.04503},
 }
 ```
