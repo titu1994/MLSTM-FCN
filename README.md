@@ -1,6 +1,6 @@
 # Multivariate LSTM-FCNs for Time Series Classification
 MLSTM FCN models, from the paper [Multivariate LSTM-FCNs for Time Series Classification](https://arxiv.org/abs/1801.04503), 
-augment the squeeze and excitation block with the state of the art univariate time series model, LSTM-FCN and ALSTM-FCN.
+augment the squeeze and excitation block with the state of the art univariate time series model, LSTM-FCN and ALSTM-FCN from the paper [LSTM Fully Convolutional Networks for Time Series Classification](https://arxiv.org/abs/1709.05206). The code for the LSTM-FCN and ALSTM-FCN models can be found at [LSTM-FCN](https://github.com/houshd/LSTM-FCN).
 
 <img src="https://github.com/titu1994/MLSTM-FCN/blob/master/images/MLSTM-FCN.png?raw=true" height=100% width=100%>
 <img src="https://github.com/titu1994/MLSTM-FCN/blob/master/images/MLSTM1-FCN.png?raw=true" height=100% width=100%>
