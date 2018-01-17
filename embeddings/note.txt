@@ -1,1 +1,0 @@
-Contains embeddings for the Stanford Tree Bank dataset
