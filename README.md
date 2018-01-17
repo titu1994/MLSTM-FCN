@@ -19,7 +19,7 @@ Keras with the Tensorflow backend has been used for the development of the model
 # Training and Evaluation
 Various multivariate benchmark datasets can be evaluated with the provided code and weight files. Refer to the weights directory for clarification.
 
-There is 1 script file for each dataset, and 4 major sections in the code. For each of these code files, please keep the line below uncommented. 
+There is 1 script file for each dataset, and 2 major sections in the code. For each of these code files, please keep the line below uncommented.
 
 - To use the MLSTM FCN model : `model = generate_model()`
 - To use the MALSTM FCN model : `model = generate_model_2()`
