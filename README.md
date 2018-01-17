@@ -10,7 +10,7 @@ Download the repository and apply `pip install -r requirements.txt` to install t
 
 Keras with the Tensorflow backend has been used for the development of the models, and there is currently no support for Theano or CNTK backends. The weights have not been tested with those backends.
 
-**Note** : The input to the Input layer of all models will be pre-shuffled to be in the shape (Batchsize, 1, Number of timesteps), and the input will be shuffled again before being applied to the CNNs (to obtain the correct shape (Batchsize, Number of timesteps, 1)). This is in contrast to the paper where the input is of the shape (Batchsize, Number of timesteps, 1) and the shuffle operation is applied before the LSTM to obtain the input shape (Batchsize, 1, Number of timesteps). These operations are equivalent.
+**Note** : The input to the Input layer of all models will be pre-shuffled to be in the shape (Batchsize, Number of variables, Number of timesteps), and the input will be shuffled again before being applied to the CNNs (to obtain the correct shape (Batchsize, Number of timesteps, Number of variables)). This is in contrast to the paper where the input is of the shape (Batchsize, Number of timesteps, Number of variables) and the shuffle operation is applied before the LSTM to obtain the input shape (Batchsize, Number of variables, Number of timesteps). These operations are equivalent.
 
 #Multivariate Benchmark Datasets
 <img src="https://github.com/titu1994/MLSTM-FCN/blob/master/images/MLSTM-FCN-benchmark1.jpg?raw=true" height=100% width=100%>
@@ -29,7 +29,7 @@ There is 1 script file for each dataset, and 4 major sections in the code. For e
 ## Training
 To train the a model, uncomment the line below and execute the script. **Note** that '???????' will already be provided, so there is no need to replace it. It refers to the prefix of the saved weight file. Also, if weights are already provided, this operation will overwrite those weights.
 
-`train_model(model, DATASET_INDEX, dataset_prefix='???????', epochs=2000, batch_size=128)` 
+`train_model(model, DATASET_INDEX, dataset_prefix='???????', epochs=250, batch_size=128)`
 
 ## Evaluate 
 To evaluate the performance of the model, simply execute the script with the below line uncommented. 
@@ -42,3 +42,9 @@ To evaluate the performance of the model, simply execute the script with the bel
 <img src="https://github.com/titu1994/MLSTM-FCN/blob/master/images/MLSTM-FCN-scores3.jpg?raw=true" height=100% width=100%>
 
 # Citation
+@misc{Karim2018,
+Author = {Fazle Karim and Somshubra Majumdar and Houshang Darabi and Samuel Harford},
+Title = {Multivariate LSTM-FCNs for Time Series Classification},
+Year = {2018},
+Eprint = {arXiv:1801.04503},
+}
