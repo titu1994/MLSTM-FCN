@@ -42,9 +42,11 @@ To evaluate the performance of the model, simply execute the script with the bel
 <img src="https://github.com/titu1994/MLSTM-FCN/blob/master/images/MLSTM-FCN-scores3.jpg?raw=true" height=100% width=100%>
 
 # Citation
-@misc{Karim2018,
+```
+`@misc{Karim2018,
 Author = {Fazle Karim and Somshubra Majumdar and Houshang Darabi and Samuel Harford},
 Title = {Multivariate LSTM-FCNs for Time Series Classification},
 Year = {2018},
 Eprint = {arXiv:1801.04503},
 }
+```
