@@ -43,7 +43,7 @@ To evaluate the performance of the model, simply execute the script with the bel
 
 # Citation
 ```
-`@misc{Karim2018,
+@misc{Karim2018,
 Author = {Fazle Karim and Somshubra Majumdar and Houshang Darabi and Samuel Harford},
 Title = {Multivariate LSTM-FCNs for Time Series Classification},
 Year = {2018},
