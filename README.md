@@ -15,6 +15,9 @@ Keras with the Tensorflow backend has been used for the development of the model
 # Multivariate Benchmark Datasets
 <img src="https://github.com/titu1994/MLSTM-FCN/blob/master/images/MLSTM-FCN-benchmark1.jpg?raw=true" height=100% width=100%>
 
+## Note
+The multivariate datasets are now available in the [Release Tab](https://github.com/titu1994/MLSTM-FCN/releases). 
+Please cite this paper and the original source of the appropriate dataset when using these datasets for academic purposes. 
 
 # Training and Evaluation
 Various multivariate benchmark datasets can be evaluated with the provided code and weight files. Refer to the weights directory for clarification.
